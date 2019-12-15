@@ -1,0 +1,8 @@
+{
+  "url": "http://localhost:8081/feecomision/crear-tipovalorcomision",
+  "tipo": "POST",
+  "tipoValorComisionEntity": {
+    "idTipoValorComisionEntity": 0,
+    "nombreTipoValorComision": "nominal"
+  }
+}

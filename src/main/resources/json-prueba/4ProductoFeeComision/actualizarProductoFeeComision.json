@@ -1,0 +1,10 @@
+{
+  "url": "http://localhost:8081/feecomision/actualizar-tipofeecomision/2",
+  "tipo": "PUT",
+  "tipoFeeComisionEntity": {
+    "idTipoFeeComisionEntity": 0,
+    "nombreTipoFeeComision": "consumidor",
+    "estadoTipoFeeComision": false,
+    "productos_fees_comisiones": null
+  }
+}

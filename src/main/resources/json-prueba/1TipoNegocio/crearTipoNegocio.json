@@ -1,0 +1,9 @@
+{
+  "url": "http://localhost:8081/feecomision/crear-tiponegocio",
+  "tipoNegocioEntity": {
+  "idTipoNegocioEntity": 0,
+  "nombreTipoNegocio": "string",
+  "estadoTipoNegocio": true,
+  "productos_fees_comisiones": null
+}
+}

@@ -1,0 +1,10 @@
+{
+  "url": "http://localhost:8081/feecomision/actualizar-tiponegocio/2",
+  "tipo": "PUT",
+  "tipoNegocioEntity": {
+    "idTipoNegocioEntity": null,
+    "nombreTipoNegocio": "cambiodenombre",
+    "estadoTipoNegocio": true,
+    "productos_fees_comisiones": null
+  }
+}

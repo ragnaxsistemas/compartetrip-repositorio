@@ -1,0 +1,10 @@
+{
+  "url": "http://localhost:8081/feecomision/crear-tipofeecomision",
+  "tipo": "POST",
+  "tipoFeeComisionEntity": {
+    "idTipoFeeComisionEntity": 0,
+    "nombreTipoFeeComision": "proveedor",
+    "estadoTipoFeeComision": true,
+    "productos_fees_comisiones": null
+  }
+}

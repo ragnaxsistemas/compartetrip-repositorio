@@ -1,0 +1,16 @@
+{
+  "url": "http://localhost:8081/feecomision/crear-historialfeecomision",
+  "tipo": "POST",
+  "productoFeeComisionEntity": {
+    "idHistorialFeeComisionEntity": 0,
+    "fkIdProductoFeeComision": {
+      "idProductoFeeComisionEntity": 1
+    },
+    
+    "porcentajeFeeComision": "1,06",
+    "fechaInicioFeeComision": null,
+    "fechaFinalFeeComision": null,
+    "estadoFeeComision": null,
+    "historial_fees_comisiones": null
+  }
+}

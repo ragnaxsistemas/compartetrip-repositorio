@@ -1,0 +1,16 @@
+{
+  "url": "http://localhost:8081/feecomision/crear-productofeecomision",
+  "tipo": "POST",
+  "productoFeeComisionEntity": {
+    "idProductoFeeComisionEntity": 0,
+    "fkIdTipoNegocio": {
+      "idTipoNegocioEntity": 1
+    },
+    "fkIdTipoFeeComision": {
+      "idTipoFeeComisionEntity": 1
+    },
+    "productoServicio": "comision Fantasma",
+    "estadoProductoFeeComision": true,
+    "historial_fees_comisiones": null
+  }
+}
