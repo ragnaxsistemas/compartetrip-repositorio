@@ -2,7 +2,6 @@ package com.ragnax.compartetriprepositorio.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -116,7 +115,7 @@ public class ArrastrameTripController {
 	})
 
 	@GetMapping(value = "${servicio.app.url.listarTodoTipoViajeRecomendado}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<TipoViajeRecomendado>>  listarTodoTipoViajeRecomendado(HttpServletRequest request)  throws LogicaImplException{
+	public ResponseEntity<List<TipoViajeRecomendado>>  listarTodoTipoViajeRecomendado()  throws LogicaImplException{
 
 		
 
@@ -179,7 +178,7 @@ public class ArrastrameTripController {
 	})
 
 	@GetMapping(value = "${servicio.app.url.listarTodoTipoVehiculoViaje}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<TipoVehiculoViaje>>  listarTodoTipoVehiculoViaje(HttpServletRequest request)  throws LogicaImplException{
+	public ResponseEntity<List<TipoVehiculoViaje>>  listarTodoTipoVehiculoViaje()  throws LogicaImplException{
 
 		return new ResponseEntity<>(arrastrameTripService.listarTodoTipoVehiculoViaje().getListaTipoVehiculoViaje(), HttpStatus.OK);
 
@@ -236,7 +235,7 @@ public class ArrastrameTripController {
 	})
 
 	@GetMapping(value = "${servicio.app.url.listarTodoTipoViaje}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<TipoViaje>>  listarTodoTipoViaje(HttpServletRequest request)  throws LogicaImplException{
+	public ResponseEntity<List<TipoViaje>>  listarTodoTipoViaje()  throws LogicaImplException{
 
 		return new ResponseEntity<>(arrastrameTripService.listarTodoTipoViaje().getListaTipoViaje(), HttpStatus.OK);
 
@@ -293,7 +292,7 @@ public class ArrastrameTripController {
 	})
 
 	@GetMapping(value = "${servicio.app.url.listarTodoTipoStatusViaje}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<TipoStatusViaje>>  listarTodoTipoStatusViaje(HttpServletRequest request)  throws LogicaImplException{
+	public ResponseEntity<List<TipoStatusViaje>>  listarTodoTipoStatusViaje()  throws LogicaImplException{
 
 		return new ResponseEntity<>(arrastrameTripService.listarTodoTipoStatusViaje().getListaTipoStatusViaje(), HttpStatus.OK);
 
@@ -350,7 +349,7 @@ public class ArrastrameTripController {
 	})
 
 	@GetMapping(value = "${servicio.app.url.listarTodoClasificacionPasajero}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<ClasificacionPasajero>>  listarTodoClasificacionPasajero(HttpServletRequest request)  throws LogicaImplException{
+	public ResponseEntity<List<ClasificacionPasajero>>  listarTodoClasificacionPasajero()  throws LogicaImplException{
 				
 		return new ResponseEntity<>(arrastrameTripService.listarTodoClasificacionPasajero().getListaClasificacionPasajero(), HttpStatus.OK);
 
@@ -407,7 +406,7 @@ public class ArrastrameTripController {
 	})
 
 	@GetMapping(value = "${servicio.app.url.listarTodoRolPasajero}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<RolPasajero>>  listarTodoRolPasajero(HttpServletRequest request)  throws LogicaImplException{
+	public ResponseEntity<List<RolPasajero>>  listarTodoRolPasajero()  throws LogicaImplException{
 
 		return new ResponseEntity<>(arrastrameTripService.listarTodoRolPasajero().getListaRolPasajero(), HttpStatus.OK);
 
@@ -463,7 +462,7 @@ public class ArrastrameTripController {
 	})
 
 	@GetMapping(value = "${servicio.app.url.listarTodoDescuento}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Descuento>>  listarTodoDescuento(HttpServletRequest request)  throws LogicaImplException{
+	public ResponseEntity<List<Descuento>>  listarTodoDescuento()  throws LogicaImplException{
 
 		return new ResponseEntity<>(arrastrameTripService.listarTodoDescuento().getListaDescuento(), HttpStatus.OK);
 

@@ -6,7 +6,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.ragnax.compartetriprepositorio.servicio.clientes.modelo.Zapala;
 import com.ragnax.compartetriprepositorio.servicio.clientes.modelo.ZapalaRequest;
 
-@FeignClient(name = "ragnax-zapala" , url = "localhost:8081")
+
+@FeignClient(name = "ragnax-zapala" , url = "${server.port.zapala}")
 public interface ZapalaClienteRest {
 	
 	@PostMapping("/generar-tiempo-duracion")
