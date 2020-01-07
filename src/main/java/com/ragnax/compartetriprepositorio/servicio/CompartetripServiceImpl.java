@@ -18,7 +18,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.ragnax.compartetriprepositorio.configuration.FactoryApiProperties;
-import com.ragnax.compartetriprepositorio.controller.response.ArrastrameTrip;
 import com.ragnax.compartetriprepositorio.entidad.ClasificacionPasajero;
 import com.ragnax.compartetriprepositorio.entidad.Descuento;
 import com.ragnax.compartetriprepositorio.entidad.DescuentoViaje;
@@ -45,7 +44,7 @@ import com.ragnax.compartetriprepositorio.servicio.utilidades.ArrastrameTripUtil
 		"buscarRolPasajero", "listarTodoRolPasajero", "buscarDescuentoxCodigoDescuento", 
 		"buscarPasajeroArrastramexIdUsuario"})
 @ComponentScan(basePackageClasses = {FactoryApiProperties.class})
-public class ArrastrameTripServiceImpl implements ArrastrameTripService {
+public class CompartetripServiceImpl implements CompartetripService {
 	//Segun se necesite se van creando llamadas al repositorio para devolver entities.
 	@Autowired
 	private FactoryArrastrameTripDAO factoryArrastrameTripDAO;
@@ -58,10 +57,8 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 	/***********************************************************/
 	/******TipoViajeRecomendado TipoViajeRecomendado ***********/
 	/***********************************************************/
-	public ArrastrameTrip crearTipoViajeRecomendado(TipoViajeRecomendado objTipoViajeRecomendado) throws LogicaImplException{
+	public TipoViajeRecomendado crearTipoViajeRecomendado(TipoViajeRecomendado objTipoViajeRecomendado) throws LogicaImplException{
 		
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
-
 		try {
 
 			Pageable pageByNombreTipoViajeRecomendado = PageRequest.of(0, 1, Sort.by("nombreTipoViajeRecomendado").descending());
@@ -83,9 +80,8 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 
 				factoryArrastrameTripDAO.getTipoViajeRecomendadoRepository().save(objTipoViajeRecomendado);
 
-				TipoViajeRecomendado codTipoViajeRecomendado = buscarTipoViajeRecomendado(objTipoViajeRecomendado).getTipoViajeRecomendado(); 
+				return buscarTipoViajeRecomendado(objTipoViajeRecomendado); 
 
-				arrastrameTrip.setTipoViajeRecomendado(codTipoViajeRecomendado);
 			}else {
 				throw new LogicaImplException("No se puede actualizar TipoViajeRecomendado, parametros inválidos");
 			}
@@ -94,12 +90,9 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 			throw new LogicaImplException(e.getMessage());
 		}
 
-		return arrastrameTrip;
 	}
 
-	public ArrastrameTrip actualizarTipoViajeRecomendado(Integer id, TipoViajeRecomendado objTipoViajeRecomendado) throws LogicaImplException{
-
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
+	public TipoViajeRecomendado actualizarTipoViajeRecomendado(Integer id, TipoViajeRecomendado objTipoViajeRecomendado) throws LogicaImplException{
 
 		try {
 
@@ -117,7 +110,7 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 
 				factoryArrastrameTripDAO.getTipoViajeRecomendadoRepository().save(objTipoViajeRecomendado);
 
-				arrastrameTrip.setTipoViajeRecomendado(objTipoViajeRecomendado);
+				return buscarTipoViajeRecomendado(objTipoViajeRecomendado); 
 			}
 			else {
 				throw new LogicaImplException("No se puede actualizar TipoViajeRecomendado, parametros ya existen en un identificador distinto");
@@ -125,14 +118,11 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 		} catch (Exception e) {
 			throw new LogicaImplException(e.getMessage());
 		}
-
-		return arrastrameTrip;
 	}
 
 	@Cacheable(value="buscarTipoViajeRecomendado")
-	public ArrastrameTrip buscarTipoViajeRecomendado(TipoViajeRecomendado objTipoViajeRecomendado) throws LogicaImplException{
+	public TipoViajeRecomendado buscarTipoViajeRecomendado(TipoViajeRecomendado objTipoViajeRecomendado) throws LogicaImplException{
 
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
 		try {	
 
 			Optional<TipoViajeRecomendado> optPerTipoViajeRecomendado = factoryArrastrameTripDAO.getTipoViajeRecomendadoRepository().findById(objTipoViajeRecomendado.getIdTipoViajeRecomendado());
@@ -140,7 +130,7 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 			/***Si existe reemplazar por el nuevo*/
 			if(optPerTipoViajeRecomendado!=null && optPerTipoViajeRecomendado.isPresent()){
 
-				arrastrameTrip.setTipoViajeRecomendado(optPerTipoViajeRecomendado.get());
+				return optPerTipoViajeRecomendado.get();
 
 			}else {
 				throw new LogicaImplException("No existe TipoViajeRecomendado con identificador:" +objTipoViajeRecomendado.getIdTipoViajeRecomendado());
@@ -148,35 +138,30 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 		} catch (Exception e) {
 			throw new LogicaImplException(e.getMessage());
 		}
-		return arrastrameTrip;
+		
 	}	
 
 	//	@Cacheable(value="listarTodoTipoViajeRecomendado")
-	public ArrastrameTrip listarTodoTipoViajeRecomendado() throws LogicaImplException{
+	public List<TipoViajeRecomendado> listarTodoTipoViajeRecomendado() throws LogicaImplException{
 
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
 
 		try {
 			List<TipoViajeRecomendado> listaTipoViajeRecomendado = factoryArrastrameTripDAO.getTipoViajeRecomendadoRepository().findAll();
 
 			if(listaTipoViajeRecomendado !=null && !listaTipoViajeRecomendado.isEmpty()){
-				arrastrameTrip.setListaTipoViajeRecomendado(listaTipoViajeRecomendado);
+				return listaTipoViajeRecomendado;
 			}else {
 				throw new LogicaImplException("No existe lista de TipoViajeRecomendado");
 			}
 		} catch (Exception e) {
 			throw new LogicaImplException(e.getMessage());
 		}
-
-		return arrastrameTrip;
 	}
 
 	/***********************************************************/
 	/******TipoVehiculoViaje TipoVehiculoViaje TipoVehiculoViaje TipoVehiculoViaje *****/
 	/***********************************************************/
-	public ArrastrameTrip crearTipoVehiculoViaje(TipoVehiculoViaje objTipoVehiculoViaje) throws LogicaImplException{
-
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
+	public TipoVehiculoViaje crearTipoVehiculoViaje(TipoVehiculoViaje objTipoVehiculoViaje) throws LogicaImplException{
 
 		try {
 			Pageable pageByNombreTipoVehiculoViaje = PageRequest.of(0, 1, Sort.by("nombreTipoVehiculoViaje").descending());
@@ -198,9 +183,8 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 
 				factoryArrastrameTripDAO.getTipoVehiculoViajeRepository().save(objTipoVehiculoViaje);
 
-				TipoVehiculoViaje codTipoVehiculoViaje = buscarTipoVehiculoViaje(objTipoVehiculoViaje).getTipoVehiculoViaje(); 
+				return buscarTipoVehiculoViaje(objTipoVehiculoViaje); 
 
-				arrastrameTrip.setTipoVehiculoViaje(codTipoVehiculoViaje);
 			}else {
 				throw new LogicaImplException("No se puede actualizar TipoVehiculoViaje, parametros inválidos");
 			}
@@ -209,12 +193,9 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 			throw new LogicaImplException(e.getMessage());
 		}
 
-		return arrastrameTrip;
 	}
 
-	public ArrastrameTrip actualizarTipoVehiculoViaje(Integer id, TipoVehiculoViaje objTipoVehiculoViaje) throws LogicaImplException{
-
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
+	public TipoVehiculoViaje actualizarTipoVehiculoViaje(Integer id, TipoVehiculoViaje objTipoVehiculoViaje) throws LogicaImplException{
 
 		try {
 
@@ -232,7 +213,7 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 
 				factoryArrastrameTripDAO.getTipoVehiculoViajeRepository().save(objTipoVehiculoViaje);
 
-				arrastrameTrip.setTipoVehiculoViaje(objTipoVehiculoViaje);
+				return buscarTipoVehiculoViaje(objTipoVehiculoViaje); 
 			}
 			else {
 				throw new LogicaImplException("No se puede actualizar TipoVehiculoViaje, parametros ya existen en un identificador distinto");
@@ -243,13 +224,11 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 			throw new LogicaImplException(e.getMessage());
 		}
 
-		return arrastrameTrip;
 	}
 
 	//	@Cacheable(value="buscarTipoVehiculoViaje")
-	public ArrastrameTrip buscarTipoVehiculoViaje(TipoVehiculoViaje objTipoVehiculoViaje) throws LogicaImplException{
+	public TipoVehiculoViaje buscarTipoVehiculoViaje(TipoVehiculoViaje objTipoVehiculoViaje) throws LogicaImplException{
 
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
 		try {	
 
 			Optional<TipoVehiculoViaje> optPerTipoVehiculoViaje = factoryArrastrameTripDAO.getTipoVehiculoViajeRepository().findById(objTipoVehiculoViaje.getIdTipoVehiculoViaje());
@@ -257,7 +236,7 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 			/***Si existe reemplazar por el nuevo*/
 			if(optPerTipoVehiculoViaje!=null && optPerTipoVehiculoViaje.isPresent()){
 
-				arrastrameTrip.setTipoVehiculoViaje(optPerTipoVehiculoViaje.get());
+				return optPerTipoVehiculoViaje.get();
 
 			}else {
 				throw new LogicaImplException("No existe TipoVehiculoViaje con identificador:" +objTipoVehiculoViaje.getIdTipoVehiculoViaje());
@@ -265,19 +244,16 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 		} catch (Exception e) {
 			throw new LogicaImplException(e.getMessage());
 		}
-		return arrastrameTrip;
 	}	
 
 	@Cacheable(value="listarTodoTipoVehiculoViaje")
-	public ArrastrameTrip listarTodoTipoVehiculoViaje() throws LogicaImplException{
-
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
+	public List<TipoVehiculoViaje> listarTodoTipoVehiculoViaje() throws LogicaImplException{
 
 		try {
 			List<TipoVehiculoViaje> listaTipoVehiculoViaje = factoryArrastrameTripDAO.getTipoVehiculoViajeRepository().findAll();
 
 			if(listaTipoVehiculoViaje !=null && !listaTipoVehiculoViaje.isEmpty()){
-				arrastrameTrip.setListaTipoVehiculoViaje(listaTipoVehiculoViaje);
+				return listaTipoVehiculoViaje;
 			}else {
 				throw new LogicaImplException("No existe lista de TipoVehiculoViaje");
 			}
@@ -285,16 +261,13 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 			throw new LogicaImplException(e.getMessage());
 		}
 
-		return arrastrameTrip;
 	}
 
 	/***********************************************************/
 	/******TipoViaje TipoViaje TipoViaje TipoViaje *****/
 	/***********************************************************/
 
-	public ArrastrameTrip crearTipoViaje(TipoViaje objTipoViaje) throws LogicaImplException{
-
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
+	public TipoViaje crearTipoViaje(TipoViaje objTipoViaje) throws LogicaImplException{
 
 		try {
 
@@ -316,9 +289,8 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 
 				factoryArrastrameTripDAO.getTipoViajeRepository().save(objTipoViaje);
 
-				TipoViaje codTipoViaje = buscarTipoViaje(objTipoViaje).getTipoViaje(); 
+				return buscarTipoViaje(objTipoViaje); 
 
-				arrastrameTrip.setTipoViaje(codTipoViaje);
 				
 			}else {
 				throw new LogicaImplException("No se puede actualizar TipoViaje, parametros inválidos");
@@ -326,13 +298,10 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 		} catch (Exception e) {
 			throw new LogicaImplException(e.getMessage());
 		}
-
-		return arrastrameTrip;
 	}
 
-	public ArrastrameTrip actualizarTipoViaje(Integer id, TipoViaje objTipoViaje) throws LogicaImplException{
+	public TipoViaje actualizarTipoViaje(Integer id, TipoViaje objTipoViaje) throws LogicaImplException{
 
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
 
 		try {
 
@@ -350,7 +319,7 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 
 				factoryArrastrameTripDAO.getTipoViajeRepository().save(objTipoViaje);
 
-				arrastrameTrip.setTipoViaje(objTipoViaje);
+				return buscarTipoViaje(objTipoViaje); 
 			}
 			else {
 				throw new LogicaImplException("No se puede actualizar TipoViaje, parametros ya existen en un identificador distinto");
@@ -361,13 +330,11 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 			throw new LogicaImplException(e.getMessage());
 		}
 
-		return arrastrameTrip;
 	}
 
 	@Cacheable(value="buscarTipoViaje")
-	public ArrastrameTrip buscarTipoViaje(TipoViaje objTipoViaje) throws LogicaImplException{
+	public TipoViaje buscarTipoViaje(TipoViaje objTipoViaje) throws LogicaImplException{
 
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
 		try {	
 
 			Optional<TipoViaje> optPerTipoViaje = factoryArrastrameTripDAO.getTipoViajeRepository().findById(objTipoViaje.getIdTipoViaje());
@@ -375,7 +342,7 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 			/***Si existe reemplazar por el nuevo*/
 			if(optPerTipoViaje!=null && optPerTipoViaje.isPresent()){
 
-				arrastrameTrip.setTipoViaje(optPerTipoViaje.get());
+				return optPerTipoViaje.get();
 
 			}else {
 				throw new LogicaImplException("No existe TipoViaje con identificador:" +objTipoViaje.getIdTipoViaje());
@@ -383,19 +350,16 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 		} catch (Exception e) {
 			throw new LogicaImplException(e.getMessage());
 		}
-		return arrastrameTrip;
 	}	
 
 	@Cacheable(value="listarTodoTipoViaje")
-	public ArrastrameTrip listarTodoTipoViaje() throws LogicaImplException{
-
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
+	public List<TipoViaje> listarTodoTipoViaje() throws LogicaImplException{
 
 		try {
 			List<TipoViaje> listaTipoViaje = factoryArrastrameTripDAO.getTipoViajeRepository().findAll();
 
 			if(listaTipoViaje !=null && !listaTipoViaje.isEmpty()){
-				arrastrameTrip.setListaTipoViaje(listaTipoViaje);
+				return listaTipoViaje;
 			}else {
 				throw new LogicaImplException("No existe lista de TipoViaje");
 			}
@@ -403,12 +367,9 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 			throw new LogicaImplException(e.getMessage());
 		}
 
-		return arrastrameTrip;
 	}
 
-	public ArrastrameTrip crearTipoStatusViaje(TipoStatusViaje objTipoStatusViaje) throws LogicaImplException{
-
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
+	public TipoStatusViaje crearTipoStatusViaje(TipoStatusViaje objTipoStatusViaje) throws LogicaImplException{
 
 		try {
 
@@ -431,22 +392,18 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 
 				factoryArrastrameTripDAO.getTipoStatusViajeRepository().save(objTipoStatusViaje);
 
-				TipoStatusViaje codTipoStatusViaje = buscarTipoStatusViaje(objTipoStatusViaje).getTipoStatusViaje(); 
+				return buscarTipoStatusViaje(objTipoStatusViaje); 
 
-				arrastrameTrip.setTipoStatusViaje(codTipoStatusViaje);
 			}else {
 				throw new LogicaImplException("No se puede actualizar TipoStatusViaje, parametros inválidos");
 			}
 		} catch (Exception e) {
 			throw new LogicaImplException(e.getMessage());
 		}
-
-		return arrastrameTrip;
 	}
 
-	public ArrastrameTrip actualizarTipoStatusViaje(Integer id, TipoStatusViaje objTipoStatusViaje) throws LogicaImplException{
+	public TipoStatusViaje actualizarTipoStatusViaje(Integer id, TipoStatusViaje objTipoStatusViaje) throws LogicaImplException{
 
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
 
 		try {
 			buscarTipoStatusViaje( new TipoStatusViaje(id));
@@ -462,26 +419,21 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 				objTipoStatusViaje.setNombreTipoStatusViaje(objTipoStatusViaje.getNombreTipoStatusViaje().toLowerCase());
 
 				factoryArrastrameTripDAO.getTipoStatusViajeRepository().save(objTipoStatusViaje);
-
-				arrastrameTrip.setTipoStatusViaje(objTipoStatusViaje);
+				
+				return buscarTipoStatusViaje(objTipoStatusViaje); 
 			}
 			else {
 				throw new LogicaImplException("No se puede actualizar TipoStatusViaje, parametros ya existen en un identificador distinto");
 			}
 
-
-
 		} catch (Exception e) {
 			throw new LogicaImplException(e.getMessage());
 		}
-
-		return arrastrameTrip;
 	}
 
 	@Cacheable(value="buscarTipoStatusViaje")
-	public ArrastrameTrip buscarTipoStatusViaje(TipoStatusViaje objTipoStatusViaje) throws LogicaImplException{
+	public TipoStatusViaje buscarTipoStatusViaje(TipoStatusViaje objTipoStatusViaje) throws LogicaImplException{
 
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
 		try {	
 
 			Optional<TipoStatusViaje> optPerTipoStatusViaje = factoryArrastrameTripDAO.getTipoStatusViajeRepository().findById(objTipoStatusViaje.getIdTipoStatusViaje());
@@ -489,7 +441,7 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 			/***Si existe reemplazar por el nuevo*/
 			if(optPerTipoStatusViaje!=null && optPerTipoStatusViaje.isPresent()){
 
-				arrastrameTrip.setTipoStatusViaje(optPerTipoStatusViaje.get());
+				return optPerTipoStatusViaje.get();
 
 			}else {
 				throw new LogicaImplException("No existe TipoStatusViaje con identificador:" +objTipoStatusViaje.getIdTipoStatusViaje());
@@ -497,19 +449,17 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 		} catch (Exception e) {
 			throw new LogicaImplException(e.getMessage());
 		}
-		return arrastrameTrip;
+		
 	}	
 
 	@Cacheable(value="listarTodoTipoStatusViaje")
-	public ArrastrameTrip listarTodoTipoStatusViaje() throws LogicaImplException{
-
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
+	public List<TipoStatusViaje> listarTodoTipoStatusViaje() throws LogicaImplException{
 
 		try {
 			List<TipoStatusViaje> listaTipoStatusViaje = factoryArrastrameTripDAO.getTipoStatusViajeRepository().findAll();
 
 			if(listaTipoStatusViaje !=null && !listaTipoStatusViaje.isEmpty()){
-				arrastrameTrip.setListaTipoStatusViaje(listaTipoStatusViaje);
+				return listaTipoStatusViaje;
 			}else {
 				throw new LogicaImplException("No existe lista de TipoStatusViaje");
 			}
@@ -517,16 +467,13 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 			throw new LogicaImplException(e.getMessage());
 		}
 
-		return arrastrameTrip;
 	}
 
 	/***********************************************************/
 	/******ClasificacionPasajero ClasificacionPasajero ClasificacionPasajero ClasificacionPasajero *****/
 	/***********************************************************/
 
-	public ArrastrameTrip crearClasificacionPasajero(ClasificacionPasajero objClasificacionPasajero) throws LogicaImplException{
-
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
+	public ClasificacionPasajero crearClasificacionPasajero(ClasificacionPasajero objClasificacionPasajero) throws LogicaImplException{
 
 		try {
 			Pageable pageByNombreClasificacionPasajero = PageRequest.of(0, 1, Sort.by("nombreClasificacionPasajero").descending());
@@ -549,9 +496,7 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 
 						factoryArrastrameTripDAO.getClasificacionPasajeroRepository().save(objClasificacionPasajero);
 
-						ClasificacionPasajero codClasificacionPasajero = buscarClasificacionPasajero(objClasificacionPasajero).getClasificacionPasajero(); 
-
-						arrastrameTrip.setClasificacionPasajero(codClasificacionPasajero);
+						return buscarClasificacionPasajero(objClasificacionPasajero); 
 
 					}else {
 						throw new LogicaImplException("No se puede crear ClasificacionPasajero, parametros ya existen en identificador valido");
@@ -561,12 +506,9 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 			throw new LogicaImplException(e.getMessage());
 		}
 
-		return arrastrameTrip;
 	}
 
-	public ArrastrameTrip actualizarClasificacionPasajero(Integer id, ClasificacionPasajero objClasificacionPasajero) throws LogicaImplException{
-
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
+	public ClasificacionPasajero actualizarClasificacionPasajero(Integer id, ClasificacionPasajero objClasificacionPasajero) throws LogicaImplException{
 
 		try {
 
@@ -584,7 +526,7 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 
 				factoryArrastrameTripDAO.getClasificacionPasajeroRepository().save(objClasificacionPasajero);
 
-				arrastrameTrip.setClasificacionPasajero(objClasificacionPasajero);
+				return buscarClasificacionPasajero(objClasificacionPasajero); 
 			}
 			else {
 				throw new LogicaImplException("No se puede actualizar ClasificacionPasajero, parametros ya existen en un identificador distinto");
@@ -594,13 +536,11 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 			throw new LogicaImplException(e.getMessage());
 		}
 
-		return arrastrameTrip;
 	}
 
 	@Cacheable(value="buscarClasificacionPasajero")
-	public ArrastrameTrip buscarClasificacionPasajero(ClasificacionPasajero objClasificacionPasajero) throws LogicaImplException{
+	public ClasificacionPasajero buscarClasificacionPasajero(ClasificacionPasajero objClasificacionPasajero) throws LogicaImplException{
 
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
 		try {	
 
 			Optional<ClasificacionPasajero> optPerClasificacionPasajero = factoryArrastrameTripDAO.getClasificacionPasajeroRepository().findById(objClasificacionPasajero.getIdClasificacionPasajero());
@@ -608,7 +548,7 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 			/***Si existe reemplazar por el nuevo*/
 			if(optPerClasificacionPasajero!=null && optPerClasificacionPasajero.isPresent()){
 
-				arrastrameTrip.setClasificacionPasajero(optPerClasificacionPasajero.get());
+				return optPerClasificacionPasajero.get();
 
 			}else {
 				throw new LogicaImplException("No existe ClasificacionPasajero con identificador:" +objClasificacionPasajero.getIdClasificacionPasajero());
@@ -616,36 +556,30 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 		} catch (Exception e) {
 			throw new LogicaImplException(e.getMessage());
 		}
-		return arrastrameTrip;
 	}	
 
 	@Cacheable(value="listarTodoClasificacionPasajero")
-	public ArrastrameTrip listarTodoClasificacionPasajero() throws LogicaImplException{
-
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
+	public List<ClasificacionPasajero> listarTodoClasificacionPasajero() throws LogicaImplException{
 
 		try {
 			List<ClasificacionPasajero> listaClasificacionPasajero = factoryArrastrameTripDAO.getClasificacionPasajeroRepository().findAll();
 
 			if(listaClasificacionPasajero !=null && !listaClasificacionPasajero.isEmpty()){
-				arrastrameTrip.setListaClasificacionPasajero(listaClasificacionPasajero);
+				return listaClasificacionPasajero;
 			}else {
 				throw new LogicaImplException("No existe lista de ClasificacionPasajero");
 			}
 		} catch (Exception e) {
 			throw new LogicaImplException(e.getMessage());
 		}
-
-		return arrastrameTrip;
 	}
 
 	/***********************************************************/
 	/******RolPasajero RolPasajero RolPasajero RolPasajero *****/
 	/***********************************************************/
 
-	public ArrastrameTrip crearRolPasajero(RolPasajero objRolPasajero) throws LogicaImplException{
+	public RolPasajero crearRolPasajero(RolPasajero objRolPasajero) throws LogicaImplException{
 
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
 		try {
 
 			Pageable pageByNombreRolPasajero = PageRequest.of(0, 1, Sort.by("nombreRolPasajero").descending());
@@ -667,9 +601,7 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 
 						factoryArrastrameTripDAO.getRolPasajeroRepository().save(objRolPasajero);
 
-						RolPasajero codRolPasajero = buscarRolPasajero(objRolPasajero).getRolPasajero(); 
-
-						arrastrameTrip.setRolPasajero(codRolPasajero);
+						return buscarRolPasajero(objRolPasajero); 
 					}else {
 						throw new LogicaImplException("No se puede crear RolPasajero, parametros ya existen en identificador valido");
 					}
@@ -677,13 +609,10 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 		} catch (Exception e) {
 			throw new LogicaImplException(e.getMessage());
 		}
-
-		return arrastrameTrip;
 	}
 
-	public ArrastrameTrip actualizarRolPasajero(Integer id, RolPasajero objRolPasajero) throws LogicaImplException{
+	public RolPasajero actualizarRolPasajero(Integer id, RolPasajero objRolPasajero) throws LogicaImplException{
 
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
 
 		try {
 			buscarRolPasajero(new RolPasajero(id));
@@ -700,7 +629,7 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 
 				factoryArrastrameTripDAO.getRolPasajeroRepository().save(objRolPasajero);
 
-				arrastrameTrip.setRolPasajero(objRolPasajero);
+				return buscarRolPasajero(objRolPasajero);
 			}
 			else {
 				throw new LogicaImplException("No se puede actualizar RolPasajero, parametros ya existen en un identificador distinto");
@@ -709,13 +638,11 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 			throw new LogicaImplException(e.getMessage());
 		}
 
-		return arrastrameTrip;
 	}
 
 	@Cacheable(value="buscarRolPasajero")
-	public ArrastrameTrip buscarRolPasajero(RolPasajero objRolPasajero) throws LogicaImplException{
+	public RolPasajero buscarRolPasajero(RolPasajero objRolPasajero) throws LogicaImplException{
 
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
 		try {	
 
 			Optional<RolPasajero> optPerRolPasajero = factoryArrastrameTripDAO.getRolPasajeroRepository().findById(objRolPasajero.getIdRolPasajero());
@@ -723,7 +650,7 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 			/***Si existe reemplazar por el nuevo*/
 			if(optPerRolPasajero!=null && optPerRolPasajero.isPresent()){
 
-				arrastrameTrip.setRolPasajero(optPerRolPasajero.get());
+				return optPerRolPasajero.get();
 
 			}else {
 				throw new LogicaImplException("No existe RolPasajero con identificador:" +objRolPasajero.getIdRolPasajero());
@@ -731,35 +658,28 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 		} catch (Exception e) {
 			throw new LogicaImplException(e.getMessage());
 		}
-		return arrastrameTrip;
 	}	
 
 	@Cacheable(value="listarTodoRolPasajero")
-	public ArrastrameTrip listarTodoRolPasajero() throws LogicaImplException{
-
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
+	public List<RolPasajero> listarTodoRolPasajero() throws LogicaImplException{
 
 		try {
 			List<RolPasajero> listaRolPasajero = factoryArrastrameTripDAO.getRolPasajeroRepository().findAll();
 
 			if(listaRolPasajero !=null && !listaRolPasajero.isEmpty()){
-				arrastrameTrip.setListaRolPasajero(listaRolPasajero);
+				return listaRolPasajero;
 			}else {
 				throw new LogicaImplException("No existe lista de RolPasajero");
 			}
 		} catch (Exception e) {
 			throw new LogicaImplException(e.getMessage());
 		}
-
-		return arrastrameTrip;
 	}
 
 	/*******************************************/
 	/****** Descuento Descuento Descuento ******/
 	/*******************************************/
-	public ArrastrameTrip crearDescuento(Descuento objDescuento) throws LogicaImplException{
-
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
+	public Descuento crearDescuento(Descuento objDescuento) throws LogicaImplException{
 
 		try {
 
@@ -779,9 +699,8 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 
 				factoryArrastrameTripDAO.getDescuentoRepository().save(objDescuento);
 
-				Descuento codDescuento = buscarDescuentoxCodigoDescuento(objDescuento).getDescuento(); 
+				return buscarDescuentoxCodigoDescuento(objDescuento); 
 
-				arrastrameTrip.setDescuento(codDescuento);
 			}else {
 				throw new LogicaImplException("No se puede crear Descuento, parametros ya existen en identificador valido");
 			}
@@ -789,13 +708,9 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 		} catch (Exception e) {
 			throw new LogicaImplException(e.getMessage());
 		}
-
-		return arrastrameTrip;
 	}
 
-	public ArrastrameTrip actualizarDescuento(Integer idUsuario, Descuento objDescuento) throws LogicaImplException {
-
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
+	public Descuento actualizarDescuento(Integer idUsuario, Descuento objDescuento) throws LogicaImplException {
 
 		try {
 			Pageable pageByNombreDescuento = PageRequest.of(0, 1, Sort.by("codigoDescuento").descending());
@@ -809,20 +724,19 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 
 				factoryArrastrameTripDAO.getDescuentoRepository().save(objDescuento);
 
-				arrastrameTrip.setDescuento(objDescuento);
+				return buscarDescuentoxCodigoDescuento(objDescuento);
+			}else {
+				throw new LogicaImplException("No se puede crear Descuento, parametros ya existen en identificador valido");
 			}
 
 		} catch (Exception e) {
 			throw new LogicaImplException(e.getMessage());
 		}
 
-		return arrastrameTrip;
 	}
 
 	@Cacheable(value="buscarDescuentoxCodigoDescuento")
-	public ArrastrameTrip buscarDescuentoxCodigoDescuento(Descuento objDescuento) throws LogicaImplException{
-
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
+	public Descuento buscarDescuentoxCodigoDescuento(Descuento objDescuento) throws LogicaImplException{
 
 		try {
 			Pageable pageByNombreDescuento = PageRequest.of(0, 1, Sort.by("codigoDescuento").descending());
@@ -832,7 +746,7 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 			/***Si existe reemplazar por el nuevo*/
 			if(!pageCodigoDescuento.isEmpty()){
 
-				arrastrameTrip.setDescuento(pageCodigoDescuento.getContent().get(0));
+				return pageCodigoDescuento.getContent().get(0);
 
 			}else {
 				throw new LogicaImplException("No existe TipoNegocio con usuario:" +objDescuento.getCodigoDescuento());
@@ -840,30 +754,24 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 		} catch (Exception e) {
 			throw new LogicaImplException(e.getMessage());
 		}
-		return arrastrameTrip;
 	}	
 
-	public ArrastrameTrip listarTodoDescuento() throws LogicaImplException{
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
+	public List<Descuento> listarTodoDescuento() throws LogicaImplException{
 
 		try {
 			List<Descuento> listaDescuento = factoryArrastrameTripDAO.getDescuentoRepository().findAll();
 
 			if(listaDescuento !=null && !listaDescuento.isEmpty()){
-				arrastrameTrip.setListaDescuento(listaDescuento);
+				return listaDescuento;
 			}else {
 				throw new LogicaImplException("No existe lista de Descuento");
 			}
 		} catch (Exception e) {
 			throw new LogicaImplException(e.getMessage());
 		}
-
-		return arrastrameTrip;
 	}
 
-	public ArrastrameTrip listarDescuentoxFechaFinDescuento(String sFechaInicial, String sFechaFinal) throws LogicaImplException{
-
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
+	public List<Descuento> listarDescuentoxFechaFinDescuento(String sFechaInicial, String sFechaFinal) throws LogicaImplException{
 
 //		Timestamp sFechaFinDescuentoA = DateMapper.mapperSimplyDateFormatYYYY_MM_DD_HH_MM_SSToTimeStamp(fechaFinDescuentoA);
 //
@@ -882,24 +790,20 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 					tsInicial, tsFinal);
 
 			if(listaDescuento !=null && !listaDescuento.isEmpty()){
-				arrastrameTrip.setListaDescuento(listaDescuento);
+				return listaDescuento;
 			}else {
 				throw new LogicaImplException("No existe lista de Descuento");
 			}
 		} catch (Exception e) {
 			throw new LogicaImplException(e.getMessage());
 		}
-
-		return arrastrameTrip;
 	}
 
 	/***********************************************************/
 	/******PasajeroArrastrame PasajeroArrastrame ***********/
 	/***********************************************************/
 
-	public ArrastrameTrip crearPasajeroArrastrame(PasajeroArrastrame objPasajeroArrastrame) throws LogicaImplException{
-
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
+	public PasajeroArrastrame crearPasajeroArrastrame(PasajeroArrastrame objPasajeroArrastrame) throws LogicaImplException{
 
 		try {
 			Pageable pageByNombrePasajeroArrastrame = PageRequest.of(0, 1, Sort.by("idUsuario").descending());
@@ -918,9 +822,8 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 
 						factoryArrastrameTripDAO.getPasajeroArrastrameRepository().save(objPasajeroArrastrame);
 
-						PasajeroArrastrame codPasajeroArrastrame = buscarPasajeroArrastramexIdUsuario(objPasajeroArrastrame).getPasajeroArrastrame(); 
+						return buscarPasajeroArrastramexIdUsuario(objPasajeroArrastrame); 
 
-						arrastrameTrip.setPasajeroArrastrame(codPasajeroArrastrame);
 					}else {
 						throw new LogicaImplException("No se puede crear PasajeroArrastrame, parametros ya existen en identificador valido");
 					}
@@ -929,12 +832,10 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 			throw new LogicaImplException(e.getMessage());
 		}
 
-		return arrastrameTrip;
 	}
 
-	public ArrastrameTrip actualizarPasajeroArrastrame(Integer idUsuario, PasajeroArrastrame objPasajeroArrastrame) throws LogicaImplException{
+	public PasajeroArrastrame actualizarPasajeroArrastrame(Integer idUsuario, PasajeroArrastrame objPasajeroArrastrame) throws LogicaImplException{
 
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
 
 		try {
 
@@ -949,20 +850,18 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 
 				factoryArrastrameTripDAO.getPasajeroArrastrameRepository().save(objPasajeroArrastrame);
 
-				arrastrameTrip.setPasajeroArrastrame(objPasajeroArrastrame);
+				return buscarPasajeroArrastramexIdUsuario(objPasajeroArrastrame); 
+			}else {
+				throw new LogicaImplException("No se puede actualizar PasajeroArrastrame, parametros incorrectos");
 			}
 
 		} catch (Exception e) {
 			throw new LogicaImplException(e.getMessage());
 		}
-
-		return arrastrameTrip;
 	}
 
 	@Cacheable(value="buscarPasajeroArrastramexIdUsuario")
-	public ArrastrameTrip buscarPasajeroArrastramexIdUsuario(PasajeroArrastrame objPasajeroArrastrame) throws LogicaImplException{
-
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
+	public PasajeroArrastrame buscarPasajeroArrastramexIdUsuario(PasajeroArrastrame objPasajeroArrastrame) throws LogicaImplException{
 
 		try {
 			Pageable pageByNombrePasajeroArrastrame = PageRequest.of(0, 1, Sort.by("idUsuario").descending());
@@ -972,7 +871,7 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 			/***Si existe reemplazar por el nuevo*/
 			if(!pageIdUsuarioArrastrame.isEmpty()){
 
-				arrastrameTrip.setPasajeroArrastrame(pageIdUsuarioArrastrame.getContent().get(0));
+				return pageIdUsuarioArrastrame.getContent().get(0);
 
 			}else {
 				throw new LogicaImplException("No existe PasajeroArrastrame con usuario:" +objPasajeroArrastrame.getIdUsuario());
@@ -980,18 +879,15 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 		} catch (Exception e) {
 			throw new LogicaImplException(e.getMessage());
 		}
-		return arrastrameTrip;
 	}	
 
-	public ArrastrameTrip listarTodoPasajeroArrastrame() throws LogicaImplException{
-
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
+	public List<PasajeroArrastrame> listarTodoPasajeroArrastrame() throws LogicaImplException{
 
 		try {
 			List<PasajeroArrastrame> listaPasajeroArrastrame = factoryArrastrameTripDAO.getPasajeroArrastrameRepository().findAll();
 
 			if(listaPasajeroArrastrame !=null && !listaPasajeroArrastrame.isEmpty()){
-				arrastrameTrip.setListaPasajeroArrastrame(listaPasajeroArrastrame);
+				return listaPasajeroArrastrame;
 			}else {
 				throw new LogicaImplException("No existe lista de PasajeroArrastrame");
 			}
@@ -999,22 +895,19 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 			throw new LogicaImplException(e.getMessage());
 		}
 
-		return arrastrameTrip;
 	}
 
 	/***********************************************************/
 	/******Viaje Viaje *****************************************/
 	/***********************************************************/
-	public ArrastrameTrip generarCodigoViaje(Viaje objViaje) throws LogicaImplException{
-
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
+	public Viaje generarCodigoViaje(Viaje objViaje) throws LogicaImplException{
 
 		try {
 			
-			PasajeroArrastrame objPasajeroArrastrame = buscarPasajeroArrastramexIdUsuario(objViaje.getIdPasajeroArrastrame()).getPasajeroArrastrame();
+			PasajeroArrastrame objPasajeroArrastrame = buscarPasajeroArrastramexIdUsuario(objViaje.getIdPasajeroArrastrame());
 			
-			if(buscarRolPasajero(objPasajeroArrastrame.getIdRolPasajero()).getRolPasajero().getIdRolPasajero() > 0 && 
-					buscarClasificacionPasajero(objPasajeroArrastrame.getIdClasificacionPasajero()).getClasificacionPasajero().getIdClasificacionPasajero() > 0){
+			if(buscarRolPasajero(objPasajeroArrastrame.getIdRolPasajero()).getIdRolPasajero() > 0 && 
+					buscarClasificacionPasajero(objPasajeroArrastrame.getIdClasificacionPasajero()).getIdClasificacionPasajero() > 0){
 				
 				
 				String codigoViaje = zapalaClienteRest.generarCodigoByNumeroByEncodear(new ZapalaRequest(
@@ -1029,7 +922,9 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 
 					objViaje.setCodigoViaje(codigoViaje);
 
-					arrastrameTrip.setViaje(objViaje);
+					return objViaje;
+				}else {
+					throw new LogicaImplException("No se puede crear codigo de viaje, datos de validacion erroneos");
 				}
 			}else {
 				throw new LogicaImplException("No se puede crear codigo de viaje, datos de validacion erroneos");
@@ -1039,23 +934,21 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 			throw new LogicaImplException(e.getMessage());
 		}
 
-		return arrastrameTrip;
 	}
 
 //	public ArrastrameTrip crearViaje(String idPasajeroArrastrame, Date dateViaje, Viaje objViaje) throws LogicaImplException {
-	public ArrastrameTrip crearViaje(String idPasajeroArrastrame, Viaje objViaje) throws LogicaImplException {
+	public Viaje crearViaje(Integer idPasajeroArrastrame, Viaje objViaje) throws LogicaImplException {
 
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
 
 		try {
 			//
 			String sFechaViaje = ArrastrameTripUtilidades.convertirTimestamptoStr(objViaje.getTimeInicioViaje(), factoryApiProperties.getConfigdata().getFechayyyyMMddTHHmmssZ());
 			
-			List<Viaje> listaViaje =  buscarViajexTimeInicioMismoInstanteViaje(sFechaViaje).getListaViaje();
+			List<Viaje> listaViaje =  listarViajexTimeInicioMismoInstanteViaje(sFechaViaje);
 			
 			PasajeroArrastrame objPasajeroArrastrame = (listaViaje!=null) ?
 					
-					buscarPasajeroArrastramexIdUsuario(new PasajeroArrastrame(Integer.parseInt(idPasajeroArrastrame))).getPasajeroArrastrame() : null;
+					buscarPasajeroArrastramexIdUsuario(new PasajeroArrastrame(idPasajeroArrastrame)) : null;
 					
 					
 					
@@ -1087,24 +980,27 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 
 						factoryArrastrameTripDAO.getViajeRepository().save(objViaje);
 
-						Viaje codViaje = buscarViajexCodigoViaje(objViaje).getViaje(); 
+//						Viaje codViaje = buscarViajexCodigoViaje(objViaje).getViaje(); 
+//
+//						arrastrameTrip = crearStatusViaje(new StatusViaje(tsInicial, objViaje));
+//
+//						arrastrameTrip.setViaje(codViaje);
+						
+						crearStatusViaje(new StatusViaje(tsInicial, objViaje));
+						
+						return buscarViajexCodigoViaje(objViaje); 
 
-						arrastrameTrip = crearStatusViaje(new StatusViaje(tsInicial, objViaje));
 
-						arrastrameTrip.setViaje(codViaje);
-
-
+					}else {
+						throw new LogicaImplException("No se puede crear viaje, datos de creacion son erroneos");
 					}
 		} catch (Exception e) {
 			throw new LogicaImplException(e.getMessage());
 		}
 
-		return arrastrameTrip;
 	}
 
-	public ArrastrameTrip actualizarViaje(Integer idUsuario, Viaje objViaje) throws LogicaImplException{
-
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
+	public Viaje actualizarViaje(Integer idUsuario, Viaje objViaje) throws LogicaImplException{
 
 		try {
 
@@ -1119,19 +1015,17 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 
 				factoryArrastrameTripDAO.getViajeRepository().save(objViaje);
 
-				arrastrameTrip.setViaje(objViaje);
+				return objViaje;
+			}else {
+				throw new LogicaImplException("No se puede actualizar viaje, datos de actualizacion son erroneos");
 			}
 
 		} catch (Exception e) {
 			throw new LogicaImplException(e.getMessage());
 		}
-
-		return arrastrameTrip;
 	}
 
-	public ArrastrameTrip buscarViajexCodigoViaje(Viaje objViaje) throws LogicaImplException{
-
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
+	public Viaje buscarViajexCodigoViaje(Viaje objViaje) throws LogicaImplException{
 
 		try {
 			Pageable pageByNombreViaje = PageRequest.of(0, 1, Sort.by("codigoViaje").descending());
@@ -1141,7 +1035,7 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 			/***Si existe reemplazar por el nuevo*/
 			if(!pageCodigoViaje.isEmpty()){
 
-				arrastrameTrip.setViaje(pageCodigoViaje.getContent().get(0));
+				return pageCodigoViaje.getContent().get(0);
 
 			}else {
 				throw new LogicaImplException("No existe Viaje con usuario:" +objViaje.getCodigoViaje());
@@ -1149,13 +1043,10 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 		} catch (Exception e) {
 			throw new LogicaImplException(e.getMessage());
 		}
-		return arrastrameTrip;
 	}
 	
 	/*Fecha en Formato yyyyMMddTHHmmssZ */
-	public ArrastrameTrip buscarViajexTimeInicioMismoInstanteViaje(String sFechaViaje) throws LogicaImplException {
-
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
+	public List<Viaje> listarViajexTimeInicioMismoInstanteViaje(String sFechaViaje) throws LogicaImplException {
 
 		try {
 			
@@ -1187,44 +1078,37 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 			/*** Si existe reemplazar por el nuevo ***/
 			if(listaViaje == null || listaViaje.isEmpty()){
 
-				arrastrameTrip.setListaViaje(null);
+				return null;
 
 			}else {
-				arrastrameTrip.setListaViaje(listaViaje);
+				return listaViaje;
 			}
 		} catch (Exception e) {
 			throw new LogicaImplException(e.getMessage());
 		}
-		return arrastrameTrip;
 	}
 
 
 
-	public ArrastrameTrip listarTodoViaje() throws LogicaImplException{
-
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
+	public List<Viaje> listarTodoViaje() throws LogicaImplException{
 
 		try {
 			List<Viaje> listaViaje = factoryArrastrameTripDAO.getViajeRepository().findAll();
 
 			if(listaViaje !=null && !listaViaje.isEmpty()){
-				arrastrameTrip.setListaViaje(listaViaje);
+				return listaViaje;
 			}else {
 				throw new LogicaImplException("No existe lista de Viaje");
 			}
 		} catch (Exception e) {
 			throw new LogicaImplException(e.getMessage());
 		}
-
-		return arrastrameTrip;
 	}
 
 	/****************************************************/
 	/****** PasajeroArrastrame  PasajeroArrastrame ******/
 	/****************************************************/
-	public ArrastrameTrip crearStatusViaje(StatusViaje objStatusViaje) throws LogicaImplException{
-
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
+	public StatusViaje crearStatusViaje(StatusViaje objStatusViaje) throws LogicaImplException{
 
 		//Si no existe fecha declarada, se agrega la fecha
 		if(objStatusViaje.getFechaStatusViaje()==null) {
@@ -1263,7 +1147,7 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 
 				pageStatusViaje  = factoryArrastrameTripDAO.getStatusViajeRepository().findByIdViaje(objStatusViaje.getIdViaje(), pageByCodigoDesc); 
 
-				arrastrameTrip.setStatusViaje(pageStatusViaje.getContent().get(0));
+				return pageStatusViaje.getContent().get(0);
 			}else {
 				throw new LogicaImplException("No se puede crear StatusViaje, parametros ya existen en identificador valido");
 			}
@@ -1271,13 +1155,9 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 		} catch (Exception e) {
 			throw new LogicaImplException(e.getMessage());
 		}
-
-		return arrastrameTrip;
 	}
 
-	public ArrastrameTrip listarStatusViajexIdViaje(StatusViaje objStatusViaje) throws LogicaImplException {
-
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
+	public List<StatusViaje> listarStatusViajexIdViaje(StatusViaje objStatusViaje) throws LogicaImplException {
 
 		try {
 			//Como la lista es pequeña, obtener ultimo status service por idViaje... ordenar descendiente para obtener el ultimo
@@ -1287,7 +1167,7 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 			//... solo actualizar estado****/
 			if(listaStatusViaje!=null){
 
-				arrastrameTrip.setListaStatusViaje(listaStatusViaje);
+				return listaStatusViaje;
 			}
 			else {
 				throw new LogicaImplException("No existe StatusViaje para codigo de negocio:" +objStatusViaje.getIdViaje().getCodigoViaje());
@@ -1296,14 +1176,13 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 		} catch (Exception e) {
 			throw new LogicaImplException(e.getMessage());
 		}
-		return arrastrameTrip;
+
 	}
 
 	/****************************************************/
 	/****** DescuentoViaje  DescuentoViaje **************/
 	/****************************************************/
-	public ArrastrameTrip crearDescuentoViaje(DescuentoViaje objDescuentoViaje) throws LogicaImplException {
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
+	public DescuentoViaje crearDescuentoViaje(DescuentoViaje objDescuentoViaje) throws LogicaImplException {
 		//Si no existe fecha declarada, se agrega la fecha
 
 		try {
@@ -1330,9 +1209,9 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 
 				factoryArrastrameTripDAO.getDescuentoViajeRepository().save(objDescuentoViaje);
 
-				DescuentoViaje codDescuentoViaje = buscarDescuentoViajexIdDescuentoxIdViaje(objDescuentoViaje).getDescuentoViaje(); 
+				return buscarDescuentoViajexIdDescuentoxIdViaje(objDescuentoViaje); 
 
-				arrastrameTrip.setDescuentoViaje(codDescuentoViaje);
+
 			}else {
 				throw new LogicaImplException("No se puede crear DescuentoViaje, parametros ya existen en identificador valido");
 			}
@@ -1340,12 +1219,9 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 		} catch (Exception e) {
 			throw new LogicaImplException(e.getMessage());
 		}
-		return arrastrameTrip;
 	}
 
-	public ArrastrameTrip buscarDescuentoViajexIdDescuentoxIdViaje(DescuentoViaje objDescuentoViaje) throws LogicaImplException{
-
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
+	public DescuentoViaje buscarDescuentoViajexIdDescuentoxIdViaje(DescuentoViaje objDescuentoViaje) throws LogicaImplException{
 
 		try {
 
@@ -1354,7 +1230,7 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 				DescuentoViaje descuentoViaje  = factoryArrastrameTripDAO.getDescuentoViajeRepository().
 						findByIdDescuentoAndIdViaje(objDescuentoViaje.getIdDescuento(), objDescuentoViaje.getIdViaje());
 
-				arrastrameTrip.setDescuentoViaje(descuentoViaje);
+				return descuentoViaje;
 
 			}else {
 				throw new LogicaImplException("No existe DescuentoViaje con descuento:" +objDescuentoViaje.getIdDescuento().getIdDescuento());
@@ -1362,13 +1238,11 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 		} catch (Exception e) {
 			throw new LogicaImplException(e.getMessage());
 		}
-		return arrastrameTrip;
+	
 	}	
 
 	//Enviar un mensaje de alguna forma e indicar que se reomovio de la lista
-	public ArrastrameTrip eliminarDescuentoViaje(Integer idUsuario, DescuentoViaje objDescuentoViaje) throws LogicaImplException{
-
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
+	public DescuentoViaje eliminarDescuentoViaje(Integer idUsuario, DescuentoViaje objDescuentoViaje) throws LogicaImplException{
 
 		try {
 
@@ -1379,6 +1253,9 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 
 				if(descuentoViaje!=null){
 					factoryArrastrameTripDAO.getDescuentoViajeRepository().delete(descuentoViaje);
+					return descuentoViaje;
+				}else {
+					throw new LogicaImplException("No se puede actualizar DescuentoViaje, identificador ya existe");
 				}
 			}else {
 				throw new LogicaImplException("No se puede actualizar DescuentoViaje, identificador ya existe");
@@ -1386,19 +1263,15 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 		} catch (Exception e) {
 			throw new LogicaImplException(e.getMessage());
 		}
-
-		return arrastrameTrip;
 	}
 
-	public ArrastrameTrip listarDescuentoViajexidViaje(DescuentoViaje objDescuentoViaje) throws LogicaImplException {
-
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
+	public List<DescuentoViaje> listarDescuentoViajexidViaje(DescuentoViaje objDescuentoViaje) throws LogicaImplException {
 
 		try {
 			List<DescuentoViaje> listaDescuentoViaje = factoryArrastrameTripDAO.getDescuentoViajeRepository().findAll();
 
 			if(listaDescuentoViaje !=null && !listaDescuentoViaje.isEmpty()){
-				arrastrameTrip.setListaDescuentoViaje(listaDescuentoViaje);
+				return listaDescuentoViaje;
 			}else {
 				throw new LogicaImplException("No existe lista de DescuentoViaje");
 			}
@@ -1406,15 +1279,13 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 			throw new LogicaImplException(e.getMessage());
 		}
 
-		return arrastrameTrip;
 	}
 
 
 	/****************************************************/
 	/****** DescuentoViaje  DescuentoViaje **************/
 	/****************************************************/
-	public ArrastrameTrip crearViajeRecomendado(ViajeRecomendado objViajeRecomendado) throws LogicaImplException {
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
+	public ViajeRecomendado crearViajeRecomendado(ViajeRecomendado objViajeRecomendado) throws LogicaImplException {
 		//Si no existe fecha declarada, se agrega la fecha
 
 		try {
@@ -1439,9 +1310,7 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 
 				factoryArrastrameTripDAO.getViajeRecomendadoRepository().save(objViajeRecomendado);
 
-				DescuentoViaje codDescuentoViaje = buscarViajeRecomendadoxIdViaje(objViajeRecomendado).getDescuentoViaje(); 
-
-				arrastrameTrip.setDescuentoViaje(codDescuentoViaje);
+				return buscarViajeRecomendadoxIdViaje(objViajeRecomendado); 
 			}else {
 				throw new LogicaImplException("No se puede crear DescuentoViaje, parametros ya existen en identificador valido");
 			}
@@ -1449,12 +1318,9 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 		} catch (Exception e) {
 			throw new LogicaImplException(e.getMessage());
 		}
-		return arrastrameTrip;
 	}
 
-	public ArrastrameTrip buscarViajeRecomendadoxIdViaje(ViajeRecomendado objViajeRecomendado) throws LogicaImplException{
-
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
+	public ViajeRecomendado buscarViajeRecomendadoxIdViaje(ViajeRecomendado objViajeRecomendado) throws LogicaImplException{
 
 		try {
 
@@ -1464,7 +1330,7 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 
 				Page<ViajeRecomendado> pageViajeRecomendado = factoryArrastrameTripDAO.getViajeRecomendadoRepository().findByIdViaje(objViajeRecomendado.getIdViaje(), pageByIdViajeRecomendado);
 
-				arrastrameTrip.setViajeRecomendado(pageViajeRecomendado.getContent().get(0));
+				return pageViajeRecomendado.getContent().get(0);
 
 			}else {
 				throw new LogicaImplException("No existe DescuentoViaje con descuento:" +objViajeRecomendado.getIdViaje().getIdViaje());
@@ -1472,13 +1338,11 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 		} catch (Exception e) {
 			throw new LogicaImplException(e.getMessage());
 		}
-		return arrastrameTrip;
+		
 	}	
 
 	//Enviar un mensaje de alguna forma e indicar que se reomovio de la lista
-	public ArrastrameTrip listarViajeRecomendadoxidTipoViajeRecomendado(ViajeRecomendado objViajeRecomendado) throws LogicaImplException {
-
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
+	public List<ViajeRecomendado> listarViajeRecomendadoxidTipoViajeRecomendado(ViajeRecomendado objViajeRecomendado) throws LogicaImplException {
 
 		try {
 
@@ -1488,25 +1352,24 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 						findByIdTipoViajeRecomendado(objViajeRecomendado.getIdTipoViajeRecomendado());
 
 				if(listaViajeRecomendado!=null){
-					arrastrameTrip.setListaViajeRecomendado(listaViajeRecomendado);
+					return listaViajeRecomendado;
+				}else {
+					throw new LogicaImplException("No se puede obtener lista de ViajeRecomendado, parametros incorrectos");
 				}
 			}else {
-				throw new LogicaImplException("No se puede actualizar DescuentoViaje, identificador ya existe");
+				throw new LogicaImplException("No se puede obtener lista de ViajeRecomendado, parametros incorrectos");
 			}
 		} catch (Exception e) {
 			throw new LogicaImplException(e.getMessage());
 		}
 
-		return arrastrameTrip;
 	}
 	/****************************************************/
 	/****** PasajeroArrastrame  PasajeroArrastrame ******/
 	/****************************************************/
 
 	//Un Pasajero Activo de la asociado a un Viaje.
-	public ArrastrameTrip crearPasajeroArrastrameViaje(PasajeroArrastrameViaje objPasajeroArrastrameViaje) throws LogicaImplException {
-
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
+	public PasajeroArrastrameViaje crearPasajeroArrastrameViaje(PasajeroArrastrameViaje objPasajeroArrastrameViaje) throws LogicaImplException {
 
 		try {
 			Pageable pageByIdViaje = PageRequest.of(0, 1, Sort.by("idViaje").descending());
@@ -1529,26 +1392,28 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 						factoryArrastrameTripDAO.getPasajeroArrastrameViajeRepository().save(objPasajeroArrastrameViaje);
 
 						List<PasajeroArrastrameViaje> listaPasajeroArrastrameViaje = 
-								listarPasajeroArrastrameViajexidViaje(objPasajeroArrastrameViaje).getListaPasajeroArrastrameViaje();
-						for(PasajeroArrastrameViaje pav :listaPasajeroArrastrameViaje) {
-							arrastrameTrip.setPasajeroArrastrameViaje(pav);
-							break;
+								listarPasajeroArrastrameViajexidViaje(objPasajeroArrastrameViaje);
+						
+						PasajeroArrastrameViaje retPasajeroArrastrameViaje = null;
+						
+						if(listaPasajeroArrastrameViaje!=null) {
+							for(PasajeroArrastrameViaje pav :listaPasajeroArrastrameViaje) {
+								retPasajeroArrastrameViaje = pav;
+								break;
+							}
+							return retPasajeroArrastrameViaje;
+						}else {
+							throw new LogicaImplException("No se puede crear PasajeroArrastrameViaje, parametros ya existen en identificador valido");
 						}
-
 					}else {
 						throw new LogicaImplException("No se puede crear PasajeroArrastrameViaje, parametros ya existen en identificador valido");
 					}
-
 		} catch (Exception e) {
 			throw new LogicaImplException(e.getMessage());
 		}
-
-		return arrastrameTrip;
 	}
 
-	public ArrastrameTrip actualizarPasajeroArrastrameViaje (Integer idPasajero, PasajeroArrastrameViaje objPasajeroArrastrameViaje) throws LogicaImplException{
-
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
+	public PasajeroArrastrameViaje actualizarPasajeroArrastrameViaje (Integer idPasajero, PasajeroArrastrameViaje objPasajeroArrastrameViaje) throws LogicaImplException{
 
 		try {
 
@@ -1566,8 +1431,12 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 
 					factoryArrastrameTripDAO.getPasajeroArrastrameViajeRepository().save(objPasajeroArrastrameViaje);
 
-					arrastrameTrip.setPasajeroArrastrameViaje(objPasajeroArrastrameViaje);
+					return objPasajeroArrastrameViaje;
+				
+				}else {
+					throw new LogicaImplException("No se puede actualizar PasajeroArrastrameViaje, identificador ya existe");
 				}
+			
 			}else {
 				throw new LogicaImplException("No se puede actualizar PasajeroArrastrameViaje, identificador ya existe");
 			}
@@ -1575,12 +1444,9 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 			throw new LogicaImplException(e.getMessage());
 		}
 
-		return arrastrameTrip;
 	}
 
-	public ArrastrameTrip eliminarPasajeroArrastrameViaje(Integer idPasajero, PasajeroArrastrameViaje objPasajeroArrastrameViaje) throws LogicaImplException{
-
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
+	public PasajeroArrastrameViaje eliminarPasajeroArrastrameViaje(Integer idPasajero, PasajeroArrastrameViaje objPasajeroArrastrameViaje) throws LogicaImplException{
 
 		try {
 
@@ -1597,36 +1463,34 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 					objPasajeroArrastrameViaje.setIdPasajeroArrastrameViaje(idPasajero);
 
 					factoryArrastrameTripDAO.getPasajeroArrastrameViajeRepository().delete(objPasajeroArrastrameViaje);
-
-					arrastrameTrip.setPasajeroArrastrameViaje(objPasajeroArrastrameViaje);
+					
+					return objPasajeroArrastrameViaje;
+					
+				}else {
+					throw new LogicaImplException("No se puede eliminar PasajeroArrastrameViaje, identificador ya existe");
 				}
 			}else {
-				throw new LogicaImplException("No se puede actualizar PasajeroArrastrameViaje, identificador ya existe");
+				throw new LogicaImplException("No se puede eliminar PasajeroArrastrameViaje, identificador ya existe");
 			}
 		} catch (Exception e) {
 			throw new LogicaImplException(e.getMessage());
 		}
 
-		return arrastrameTrip;
 	}
 
-	public ArrastrameTrip listarPasajeroArrastrameViajexidViaje(PasajeroArrastrameViaje objPasajeroArrastrameViaje) throws LogicaImplException{
-
-		ArrastrameTrip arrastrameTrip = new ArrastrameTrip();
+	public List<PasajeroArrastrameViaje> listarPasajeroArrastrameViajexidViaje(PasajeroArrastrameViaje objPasajeroArrastrameViaje) throws LogicaImplException{
 
 		try {
 			List<PasajeroArrastrameViaje> listaPasajeroArrastrameViaje = factoryArrastrameTripDAO.getPasajeroArrastrameViajeRepository().findAll();
 
 			if(listaPasajeroArrastrameViaje !=null && !listaPasajeroArrastrameViaje.isEmpty()){
-				arrastrameTrip.setListaPasajeroArrastrameViaje(listaPasajeroArrastrameViaje);
+				return listaPasajeroArrastrameViaje;
 			}else {
 				throw new LogicaImplException("No existe lista de PasajeroArrastrameViaje");
 			}
 		} catch (Exception e) {
 			throw new LogicaImplException(e.getMessage());
 		}
-
-		return arrastrameTrip;
 	}
 
 	public void limpiarCacheLocal() {
@@ -1715,4 +1579,5 @@ public class ArrastrameTripServiceImpl implements ArrastrameTripService {
 	private void evictBuscarPasajeroArrastramexIdUsuario() {
 		System.out.println(factoryApiProperties.getCache().getEvictBuscarPasajeroArrastramexIdUsuario());
 	}
+	
 }

@@ -1,6 +1,8 @@
 package com.ragnax.compartetriprepositorio.entidad;
 
-import java.util.List;
+import java.io.Serializable;
+
+//import java.util.List;
 
 import javax.persistence.*;
 
@@ -11,8 +13,10 @@ import javax.persistence.*;
 @Entity
 @Table (name="tipo_viaje_recomendado")
 
-public class TipoViajeRecomendado{
+public class TipoViajeRecomendado implements Serializable{
  
+	private static final long serialVersionUID = -1779325929823506273L;
+
 	@Id
 	@OrderBy
 	@Column(name="id_tipo_viaje_recomendado")
@@ -21,8 +25,8 @@ public class TipoViajeRecomendado{
 	@Column(name="nombre_tipo_viaje_recomendado")
 	private String nombreTipoViajeRecomendado;
 	
-	@OneToMany(mappedBy="idTipoViajeRecomendado")
-	private List<ViajeRecomendado> viajes_recomendados;
+//	@OneToMany(mappedBy="idTipoViajeRecomendado")
+//	private List<ViajeRecomendado> viajes_recomendados;
 
 	public TipoViajeRecomendado() {
 		super();
@@ -55,12 +59,12 @@ public class TipoViajeRecomendado{
 		this.nombreTipoViajeRecomendado = nombreTipoViajeRecomendado;
 	}
 
-	public List<ViajeRecomendado> getViajes_recomendados() {
-		return viajes_recomendados;
-	}
-
-	public void setViajes_recomendados(List<ViajeRecomendado> viajes_recomendados) {
-		this.viajes_recomendados = viajes_recomendados;
-	}
+//	public List<ViajeRecomendado> getViajes_recomendados() {
+//		return viajes_recomendados;
+//	}
+//
+//	public void setViajes_recomendados(List<ViajeRecomendado> viajes_recomendados) {
+//		this.viajes_recomendados = viajes_recomendados;
+//	}
 	
 }

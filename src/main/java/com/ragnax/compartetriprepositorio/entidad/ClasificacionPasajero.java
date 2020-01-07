@@ -1,7 +1,9 @@
 package com.ragnax.compartetriprepositorio.entidad;
 
 
-import java.util.List;
+import java.io.Serializable;
+
+//import java.util.List;
 
 import javax.persistence.*;
 
@@ -12,8 +14,13 @@ import javax.persistence.*;
 @Entity
 @Table (name="clasificacion_pasajero")
 
-public class ClasificacionPasajero{
+public class ClasificacionPasajero implements Serializable{
  
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1023148518708582466L;
+
 	@Id
 	@OrderBy
 	@Column(name="id_clasificacion_pasajero")
@@ -25,11 +32,8 @@ public class ClasificacionPasajero{
 	@Column(name="limite_minimo_viaje")
 	private Integer limiteMinimoViaje;
 	
-//	@Column(name="prioridad_clasificacion_pasajero")
-//	private Integer prioridadClasificacionPasajero;
-	
-	@OneToMany(mappedBy="idClasificacionPasajero")
-	private List<PasajeroArrastrame> pasajeros_arrastrames;
+//	@OneToMany(mappedBy="idClasificacionPasajero")
+//	private List<PasajeroArrastrame> pasajeros_arrastrames;
 	
 	public ClasificacionPasajero(Integer idClasificacionPasajero) {
 		super();
@@ -70,11 +74,11 @@ public class ClasificacionPasajero{
 		this.limiteMinimoViaje = limiteMinimoViaje;
 	}
 
-	public List<PasajeroArrastrame> getPasajeros_arrastrames() {
-		return pasajeros_arrastrames;
-	}
-
-	public void setPasajeros_arrastrames(List<PasajeroArrastrame> pasajeros_arrastrames) {
-		this.pasajeros_arrastrames = pasajeros_arrastrames;
-	}
+//	public List<PasajeroArrastrame> getPasajeros_arrastrames() {
+//		return pasajeros_arrastrames;
+//	}
+//
+//	public void setPasajeros_arrastrames(List<PasajeroArrastrame> pasajeros_arrastrames) {
+//		this.pasajeros_arrastrames = pasajeros_arrastrames;
+//	}
 }

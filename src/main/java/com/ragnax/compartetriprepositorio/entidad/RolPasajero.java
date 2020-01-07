@@ -1,7 +1,9 @@
 package com.ragnax.compartetriprepositorio.entidad;
 
 
-import java.util.List;
+import java.io.Serializable;
+
+//import java.util.List;
 
 import javax.persistence.*;
 
@@ -12,8 +14,10 @@ import javax.persistence.*;
 @Entity
 @Table (name="rol_pasajero")
 
-public class RolPasajero{
+public class RolPasajero implements Serializable{
  
+	private static final long serialVersionUID = -2338607492094750124L;
+
 	@Id
 	@OrderBy
 	@Column(name="id_rol_pasajero")
@@ -22,8 +26,8 @@ public class RolPasajero{
 	@Column(name="nombre_rol_pasajero")
 	private String nombreRolPasajero;
 	
-	@OneToMany(mappedBy="idRolPasajero")
-	private List<PasajeroArrastrame> pasajeros_arrastrames;
+//	@OneToMany(mappedBy="idRolPasajero")
+//	private List<PasajeroArrastrame> pasajeros_arrastrames;
 	
 	public RolPasajero() {
 		super();
@@ -56,11 +60,11 @@ public class RolPasajero{
 		this.nombreRolPasajero = nombreRolPasajero;
 	}
 
-	public List<PasajeroArrastrame> getPasajeros_arrastrames() {
-		return pasajeros_arrastrames;
-	}
-
-	public void setPasajeros_arrastrames(List<PasajeroArrastrame> pasajeros_arrastrames) {
-		this.pasajeros_arrastrames = pasajeros_arrastrames;
-	}
+//	public List<PasajeroArrastrame> getPasajeros_arrastrames() {
+//		return pasajeros_arrastrames;
+//	}
+//
+//	public void setPasajeros_arrastrames(List<PasajeroArrastrame> pasajeros_arrastrames) {
+//		this.pasajeros_arrastrames = pasajeros_arrastrames;
+//	}
 }

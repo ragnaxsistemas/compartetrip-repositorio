@@ -1,7 +1,9 @@
 package com.ragnax.compartetriprepositorio.entidad;
 
 
-import java.util.List;
+import java.io.Serializable;
+
+//import java.util.List;
 
 import javax.persistence.*;
 
@@ -12,8 +14,10 @@ import javax.persistence.*;
 @Entity
 @Table (name="tipo_vehiculo_viaje")
 
-public class TipoVehiculoViaje{
+public class TipoVehiculoViaje implements Serializable{
  
+	private static final long serialVersionUID = 1014684859189276623L;
+
 	@Id
 	@OrderBy
 	@Column(name="id_tipo_vehiculo_viaje")
@@ -25,8 +29,8 @@ public class TipoVehiculoViaje{
 	@Column(name="prioridad_tipo_vehiculo_viaje")
 	private Integer prioridadTipoVehiculoViaje;
 	
-	@OneToMany(mappedBy="idTipoVehiculoViaje")
-	private List<Viaje> viajes;
+//	@OneToMany(mappedBy="idTipoVehiculoViaje")
+//	private List<Viaje> viajes;
 	
 	public TipoVehiculoViaje() {
 		super();
@@ -37,8 +41,9 @@ public class TipoVehiculoViaje{
 		this.idTipoVehiculoViaje = idTipoVehiculoViaje;
 	}
 	
-	public TipoVehiculoViaje(String nombreTipoVehiculoViaje, Integer prioridadTipoVehiculoViaje) {
+	public TipoVehiculoViaje(Integer idTipoVehiculoViaje, String nombreTipoVehiculoViaje, Integer prioridadTipoVehiculoViaje) {
 		super();
+		this.idTipoVehiculoViaje = idTipoVehiculoViaje;
 		this.nombreTipoVehiculoViaje = nombreTipoVehiculoViaje;
 		this.prioridadTipoVehiculoViaje = prioridadTipoVehiculoViaje;
 	}
@@ -67,12 +72,12 @@ public class TipoVehiculoViaje{
 		this.prioridadTipoVehiculoViaje = prioridadTipoVehiculoViaje;
 	}
 
-	public List<Viaje> getViajes() {
-		return viajes;
-	}
-
-	public void setViajes(List<Viaje> viajes) {
-		this.viajes = viajes;
-	}
+//	public List<Viaje> getViajes() {
+//		return viajes;
+//	}
+//
+//	public void setViajes(List<Viaje> viajes) {
+//		this.viajes = viajes;
+//	}
 	
 }

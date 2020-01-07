@@ -1,5 +1,7 @@
 package com.ragnax.compartetriprepositorio.entidad;
 
+import java.io.Serializable;
+
 import javax.persistence.*;
 
 /**
@@ -9,8 +11,10 @@ import javax.persistence.*;
 @Entity
 @Table (name="viaje_recomendado")
 
-public class ViajeRecomendado{
+public class ViajeRecomendado implements Serializable{
  
+	private static final long serialVersionUID = 6339368606346657164L;
+
 	@Id
 	@OrderBy
 	@Column(name="id_viaje_recomendado")

@@ -1,8 +1,9 @@
 package com.ragnax.compartetriprepositorio.entidad;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.List;
+//import java.util.List;
 
 import javax.persistence.*;
 
@@ -13,8 +14,10 @@ import javax.persistence.*;
 @Entity
 @Table (name="viaje")
 
-public class Viaje{
+public class Viaje implements Serializable{
  
+	private static final long serialVersionUID = 2070159180483095374L;
+
 	@Id
 	@OrderBy
 	@Column(name="id_viaje")
@@ -69,14 +72,14 @@ public class Viaje{
 	@Column(name="fecha_registro_viaje")
 	private Timestamp fechaRegistroViaje;
 	
-	@OneToMany(mappedBy="idViaje")
-	private List<PasajeroArrastrameViaje> pasajeros_arrastrames_viajes;
-	
-	@OneToMany(mappedBy="idViaje")
-	private List<DescuentoViaje> descuentos_viajes;
-	
-	@OneToMany(mappedBy="idViaje")
-	private List<ViajeRecomendado> viajes_recomendados;
+//	@OneToMany(mappedBy="idViaje")
+//	private List<PasajeroArrastrameViaje> pasajeros_arrastrames_viajes;
+//	
+//	@OneToMany(mappedBy="idViaje")
+//	private List<DescuentoViaje> descuentos_viajes;
+//	
+//	@OneToMany(mappedBy="idViaje")
+//	private List<ViajeRecomendado> viajes_recomendados;
 
 	public Viaje() {
 		super();
@@ -263,27 +266,27 @@ public class Viaje{
 		this.fechaRegistroViaje = fechaRegistroViaje;
 	}
 
-	public List<PasajeroArrastrameViaje> getPasajeros_arrastrames_viajes() {
-		return pasajeros_arrastrames_viajes;
-	}
-
-	public void setPasajeros_arrastrames_viajes(List<PasajeroArrastrameViaje> pasajeros_arrastrames_viajes) {
-		this.pasajeros_arrastrames_viajes = pasajeros_arrastrames_viajes;
-	}
-
-	public List<DescuentoViaje> getDescuentos_viajes() {
-		return descuentos_viajes;
-	}
-
-	public void setDescuentos_viajes(List<DescuentoViaje> descuentos_viajes) {
-		this.descuentos_viajes = descuentos_viajes;
-	}
-
-	public List<ViajeRecomendado> getViajes_recomendados() {
-		return viajes_recomendados;
-	}
-
-	public void setViajes_recomendados(List<ViajeRecomendado> viajes_recomendados) {
-		this.viajes_recomendados = viajes_recomendados;
-	}
+//	public List<PasajeroArrastrameViaje> getPasajeros_arrastrames_viajes() {
+//		return pasajeros_arrastrames_viajes;
+//	}
+//
+//	public void setPasajeros_arrastrames_viajes(List<PasajeroArrastrameViaje> pasajeros_arrastrames_viajes) {
+//		this.pasajeros_arrastrames_viajes = pasajeros_arrastrames_viajes;
+//	}
+//
+//	public List<DescuentoViaje> getDescuentos_viajes() {
+//		return descuentos_viajes;
+//	}
+//
+//	public void setDescuentos_viajes(List<DescuentoViaje> descuentos_viajes) {
+//		this.descuentos_viajes = descuentos_viajes;
+//	}
+//
+//	public List<ViajeRecomendado> getViajes_recomendados() {
+//		return viajes_recomendados;
+//	}
+//
+//	public void setViajes_recomendados(List<ViajeRecomendado> viajes_recomendados) {
+//		this.viajes_recomendados = viajes_recomendados;
+//	}
 }

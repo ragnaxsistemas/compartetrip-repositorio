@@ -1,6 +1,8 @@
 package com.ragnax.compartetriprepositorio.entidad;
 
-import java.util.List;
+import java.io.Serializable;
+
+//import java.util.List;
 
 import javax.persistence.*;
 
@@ -11,8 +13,10 @@ import javax.persistence.*;
 @Entity
 @Table (name="pasajero_arrastrame")
 
-public class PasajeroArrastrame{
+public class PasajeroArrastrame implements Serializable{
  
+	private static final long serialVersionUID = 77141173088279835L;
+
 	@Id
 	@OrderBy
 	@Column(name="id_pasajero_arrastrame")
@@ -32,8 +36,8 @@ public class PasajeroArrastrame{
 	@Column(name="ubicacion_actual_pasajero")
 	private String ubicacionActualPasajero;
 	
-	@OneToMany(mappedBy="idPasajeroArrastrame")
-	private List<PasajeroArrastrameViaje> pasajeros_arrastrames_viajes;
+//	@OneToMany(mappedBy="idPasajeroArrastrame")
+//	private List<PasajeroArrastrameViaje> pasajeros_arrastrames_viajes;
 	
 	public PasajeroArrastrame() {
 		super();
@@ -93,12 +97,12 @@ public class PasajeroArrastrame{
 		this.ubicacionActualPasajero = ubicacionActualPasajero;
 	}
 
-	public List<PasajeroArrastrameViaje> getPasajeros_arrastrames_viajes() {
-		return pasajeros_arrastrames_viajes;
-	}
-
-	public void setPasajeros_arrastrames_viajes(List<PasajeroArrastrameViaje> pasajeros_arrastrames_viajes) {
-		this.pasajeros_arrastrames_viajes = pasajeros_arrastrames_viajes;
-	}
+//	public List<PasajeroArrastrameViaje> getPasajeros_arrastrames_viajes() {
+//		return pasajeros_arrastrames_viajes;
+//	}
+//
+//	public void setPasajeros_arrastrames_viajes(List<PasajeroArrastrameViaje> pasajeros_arrastrames_viajes) {
+//		this.pasajeros_arrastrames_viajes = pasajeros_arrastrames_viajes;
+//	}
 
 }

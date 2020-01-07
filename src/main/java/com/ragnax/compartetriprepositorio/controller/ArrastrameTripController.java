@@ -30,7 +30,7 @@ import com.ragnax.compartetriprepositorio.entidad.TipoViajeRecomendado;
 import com.ragnax.compartetriprepositorio.entidad.Viaje;
 import com.ragnax.compartetriprepositorio.entidad.ViajeRecomendado;
 import com.ragnax.compartetriprepositorio.exception.LogicaImplException;
-import com.ragnax.compartetriprepositorio.servicio.ArrastrameTripService;
+import com.ragnax.compartetriprepositorio.servicio.CompartetripService;
 
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -48,7 +48,7 @@ public class ArrastrameTripController {
 	
 	/****@GetMapping  no soporta Errors****/
 	@Autowired
-	ArrastrameTripService arrastrameTripService;
+	CompartetripService arrastrameTripService;
 
 	@GetMapping(value = "${servicio.app.url.limpiarCache}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public void clearAllCaches() {
@@ -71,7 +71,7 @@ public class ArrastrameTripController {
 		
 		
 		return new ResponseEntity<>(arrastrameTripService.crearTipoViajeRecomendado(
-				objTipoViajeRecomendado).getTipoViajeRecomendado(), HttpStatus.OK);
+				objTipoViajeRecomendado), HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "Actualizar Tipo de Viaje Recomendado", response = TipoViajeRecomendado.class)
@@ -89,7 +89,7 @@ public class ArrastrameTripController {
 		
 
 		return new ResponseEntity<>(arrastrameTripService.actualizarTipoViajeRecomendado(
-				Integer.parseInt(id), objTipoViajeRecomendado).getTipoViajeRecomendado() , HttpStatus.OK);
+				Integer.parseInt(id), objTipoViajeRecomendado) , HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "Buscar Tipo de Viaje Recomendado", response = TipoViajeRecomendado.class)
@@ -104,7 +104,7 @@ public class ArrastrameTripController {
 		
 
 		return new ResponseEntity<>(arrastrameTripService.buscarTipoViajeRecomendado(
-				new TipoViajeRecomendado(Integer.parseInt(id))).getTipoViajeRecomendado(),  HttpStatus.OK);
+				new TipoViajeRecomendado(Integer.parseInt(id))),  HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "Listar Todos los Tipo de Viaje Recomendado", response = TipoViajeRecomendado.class)
@@ -119,7 +119,7 @@ public class ArrastrameTripController {
 
 		
 
-		return new ResponseEntity<>(arrastrameTripService.listarTodoTipoViajeRecomendado().getListaTipoViajeRecomendado(), HttpStatus.OK);
+		return new ResponseEntity<>(arrastrameTripService.listarTodoTipoViajeRecomendado(), HttpStatus.OK);
 
 	}
 	
@@ -137,7 +137,7 @@ public class ArrastrameTripController {
 	public ResponseEntity<TipoVehiculoViaje>  crearTipoVehiculoViaje(  @ApiParam(value = "objeto de entrada", required = true) 
 	@RequestBody @Valid TipoVehiculoViaje objTipoVehiculoViaje, @ApiIgnore Errors errors)  throws LogicaImplException{
 
-		return new ResponseEntity<>(arrastrameTripService.crearTipoVehiculoViaje(objTipoVehiculoViaje).getTipoVehiculoViaje(), 
+		return new ResponseEntity<>(arrastrameTripService.crearTipoVehiculoViaje(objTipoVehiculoViaje), 
 				HttpStatus.OK);
 	}
 	
@@ -154,7 +154,7 @@ public class ArrastrameTripController {
 			@ApiIgnore Errors errors)  throws LogicaImplException{
 
 		return new ResponseEntity<>(arrastrameTripService.actualizarTipoVehiculoViaje(
-				Integer.parseInt(id), objTipoVehiculoViaje).getTipoVehiculoViaje(), HttpStatus.OK);
+				Integer.parseInt(id), objTipoVehiculoViaje), HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "Buscar Tipo de Vehiculo para el Viaje", response = TipoVehiculoViaje.class)
@@ -167,7 +167,7 @@ public class ArrastrameTripController {
 	public ResponseEntity<TipoVehiculoViaje>  buscarTipoVehiculoViaje(  @ApiParam(value = "objeto de entrada", required = true, defaultValue = "0") @PathVariable String id)  throws LogicaImplException{
 
 		return new ResponseEntity<>(arrastrameTripService.buscarTipoVehiculoViaje(
-				new TipoVehiculoViaje(Integer.parseInt(id))).getTipoVehiculoViaje(), HttpStatus.OK);
+				new TipoVehiculoViaje(Integer.parseInt(id))), HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "Listar Todos los Tipo de Vehiculo para el Viaje", response = RagnaxError.class)
@@ -180,7 +180,7 @@ public class ArrastrameTripController {
 	@GetMapping(value = "${servicio.app.url.listarTodoTipoVehiculoViaje}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<TipoVehiculoViaje>>  listarTodoTipoVehiculoViaje()  throws LogicaImplException{
 
-		return new ResponseEntity<>(arrastrameTripService.listarTodoTipoVehiculoViaje().getListaTipoVehiculoViaje(), HttpStatus.OK);
+		return new ResponseEntity<>(arrastrameTripService.listarTodoTipoVehiculoViaje(), HttpStatus.OK);
 
 	}
 	/***************************************************/
@@ -196,7 +196,7 @@ public class ArrastrameTripController {
 	public ResponseEntity<TipoViaje>  crearTipoViaje(  @ApiParam(value = "objeto de entrada", required = true) 
 	@RequestBody @Valid TipoViaje objTipoViaje, @ApiIgnore Errors errors)  throws LogicaImplException{
 
-		return new ResponseEntity<>(arrastrameTripService.crearTipoViaje(objTipoViaje).getTipoViaje(), HttpStatus.OK);
+		return new ResponseEntity<>(arrastrameTripService.crearTipoViaje(objTipoViaje), HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "Actualizar Tipo de Vehiculo para el Viaje", response = TipoViaje.class)
@@ -211,7 +211,7 @@ public class ArrastrameTripController {
 			@ApiParam(value = "objeto de entrada", required = true, defaultValue = "0") @PathVariable String id, 
 			@ApiIgnore Errors errors)  throws LogicaImplException{
 
-		return new ResponseEntity<>(arrastrameTripService.actualizarTipoViaje(Integer.parseInt(id), objTipoViaje).getTipoViaje(), HttpStatus.OK);
+		return new ResponseEntity<>(arrastrameTripService.actualizarTipoViaje(Integer.parseInt(id), objTipoViaje), HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "Buscar Tipo de Vehiculo para el Viaje", response = TipoViaje.class)
@@ -224,7 +224,7 @@ public class ArrastrameTripController {
 	public ResponseEntity<TipoViaje>  buscarTipoViaje(  @ApiParam(value = "objeto de entrada", required = true, defaultValue = "0") @PathVariable String id)  throws LogicaImplException{
 
 		return new ResponseEntity<>(arrastrameTripService.buscarTipoViaje(
-				new TipoViaje(Integer.parseInt(id))).getTipoViaje(), HttpStatus.OK);
+				new TipoViaje(Integer.parseInt(id))), HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "Listar Todos los Tipo de Vehiculo para el Viaje", response = TipoViaje.class)
@@ -237,7 +237,7 @@ public class ArrastrameTripController {
 	@GetMapping(value = "${servicio.app.url.listarTodoTipoViaje}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<TipoViaje>>  listarTodoTipoViaje()  throws LogicaImplException{
 
-		return new ResponseEntity<>(arrastrameTripService.listarTodoTipoViaje().getListaTipoViaje(), HttpStatus.OK);
+		return new ResponseEntity<>(arrastrameTripService.listarTodoTipoViaje(), HttpStatus.OK);
 
 	}
 	
@@ -252,7 +252,7 @@ public class ArrastrameTripController {
 	@RequestBody @Valid TipoStatusViaje objTipoStatusViaje, @ApiIgnore Errors errors)  throws LogicaImplException{
 
 		return new ResponseEntity<>(arrastrameTripService.crearTipoStatusViaje(
-				objTipoStatusViaje).getTipoStatusViaje(), HttpStatus.OK);
+				objTipoStatusViaje), HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "Actualizar Tipo de Vehiculo para el Viaje", response = TipoStatusViaje.class)
@@ -268,7 +268,7 @@ public class ArrastrameTripController {
 			@ApiIgnore Errors errors)  throws LogicaImplException{
 
 		return new ResponseEntity<>(arrastrameTripService.actualizarTipoStatusViaje(
-				Integer.parseInt(id), objTipoStatusViaje).getTipoStatusViaje(), HttpStatus.OK);
+				Integer.parseInt(id), objTipoStatusViaje), HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "Buscar Tipo de Vehiculo para el Viaje", response = TipoStatusViaje.class)
@@ -281,7 +281,7 @@ public class ArrastrameTripController {
 	public ResponseEntity<TipoStatusViaje>  buscarTipoStatusViaje(  @ApiParam(value = "objeto de entrada", required = true, defaultValue = "0") @PathVariable String id)  throws LogicaImplException{
 
 		return new ResponseEntity<>(arrastrameTripService.buscarTipoStatusViaje(
-				new TipoStatusViaje(Integer.parseInt(id))).getTipoStatusViaje(), HttpStatus.OK);
+				new TipoStatusViaje(Integer.parseInt(id))), HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "Listar Todos los Tipo de Vehiculo para el Viaje", response = TipoStatusViaje.class)
@@ -294,7 +294,7 @@ public class ArrastrameTripController {
 	@GetMapping(value = "${servicio.app.url.listarTodoTipoStatusViaje}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<TipoStatusViaje>>  listarTodoTipoStatusViaje()  throws LogicaImplException{
 
-		return new ResponseEntity<>(arrastrameTripService.listarTodoTipoStatusViaje().getListaTipoStatusViaje(), HttpStatus.OK);
+		return new ResponseEntity<>(arrastrameTripService.listarTodoTipoStatusViaje(), HttpStatus.OK);
 
 	}
 	
@@ -309,7 +309,7 @@ public class ArrastrameTripController {
 	@RequestBody @Valid ClasificacionPasajero objClasificacionPasajero, @ApiIgnore Errors errors)  throws LogicaImplException{
 
 		return new ResponseEntity<>(arrastrameTripService.crearClasificacionPasajero(
-				objClasificacionPasajero).getClasificacionPasajero(), HttpStatus.OK);
+				objClasificacionPasajero), HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "Actualizar Clasificacion de Pasajero", response = ClasificacionPasajero.class)
@@ -325,7 +325,7 @@ public class ArrastrameTripController {
 			@ApiIgnore Errors errors)  throws LogicaImplException{
 
 		return new ResponseEntity<>(arrastrameTripService.actualizarClasificacionPasajero(
-				Integer.parseInt(id), objClasificacionPasajero).getClasificacionPasajero(), HttpStatus.OK);
+				Integer.parseInt(id), objClasificacionPasajero), HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "Buscar Tipo de Vehiculo para el Viaje", response = ClasificacionPasajero.class)
@@ -338,7 +338,7 @@ public class ArrastrameTripController {
 	public ResponseEntity<ClasificacionPasajero>  buscarClasificacionPasajero(  @ApiParam(value = "objeto de entrada", required = true, defaultValue = "0") @PathVariable String id)  throws LogicaImplException{
 
 		return new ResponseEntity<>(arrastrameTripService.buscarClasificacionPasajero(
-				new ClasificacionPasajero(Integer.parseInt(id))).getClasificacionPasajero(),HttpStatus.OK);
+				new ClasificacionPasajero(Integer.parseInt(id))),HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "Listar Todos los Tipo de Vehiculo para el Viaje", response = ClasificacionPasajero.class)
@@ -351,7 +351,7 @@ public class ArrastrameTripController {
 	@GetMapping(value = "${servicio.app.url.listarTodoClasificacionPasajero}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<ClasificacionPasajero>>  listarTodoClasificacionPasajero()  throws LogicaImplException{
 				
-		return new ResponseEntity<>(arrastrameTripService.listarTodoClasificacionPasajero().getListaClasificacionPasajero(), HttpStatus.OK);
+		return new ResponseEntity<>(arrastrameTripService.listarTodoClasificacionPasajero(), HttpStatus.OK);
 
 	}
 	
@@ -366,7 +366,7 @@ public class ArrastrameTripController {
 	@RequestBody @Valid RolPasajero objRolPasajero, @ApiIgnore Errors errors)  throws LogicaImplException{
 
 		return new ResponseEntity<>(arrastrameTripService.crearRolPasajero(
-				objRolPasajero).getRolPasajero(), HttpStatus.OK);
+				objRolPasajero), HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "Actualizar Tipo de Vehiculo para el Viaje", response = RolPasajero.class)
@@ -382,7 +382,7 @@ public class ArrastrameTripController {
 			@ApiIgnore Errors errors)  throws LogicaImplException{
 
 		return new ResponseEntity<>(arrastrameTripService.actualizarRolPasajero(
-				Integer.parseInt(id), objRolPasajero).getRolPasajero(), HttpStatus.OK);
+				Integer.parseInt(id), objRolPasajero), HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "Buscar Tipo de Rol de Pasajero", response = RagnaxError.class)
@@ -395,7 +395,7 @@ public class ArrastrameTripController {
 	public ResponseEntity<RolPasajero>  buscarRolPasajero(  @ApiParam(value = "objeto de entrada", required = true, defaultValue = "0") @PathVariable String id)  throws LogicaImplException{
 
 		return new ResponseEntity<>(arrastrameTripService.buscarRolPasajero(
-				new RolPasajero(Integer.parseInt(id))).getRolPasajero(),  HttpStatus.OK);
+				new RolPasajero(Integer.parseInt(id))),  HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "Listar Todos los Tipo de Vehiculo para el Viaje", response = RolPasajero.class)
@@ -408,7 +408,7 @@ public class ArrastrameTripController {
 	@GetMapping(value = "${servicio.app.url.listarTodoRolPasajero}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<RolPasajero>>  listarTodoRolPasajero()  throws LogicaImplException{
 
-		return new ResponseEntity<>(arrastrameTripService.listarTodoRolPasajero().getListaRolPasajero(), HttpStatus.OK);
+		return new ResponseEntity<>(arrastrameTripService.listarTodoRolPasajero(), HttpStatus.OK);
 
 	}
 	
@@ -422,7 +422,7 @@ public class ArrastrameTripController {
 	public ResponseEntity<Descuento>  crearDescuento(  @ApiParam(value = "objeto de entrada", required = true) 
 	@RequestBody @Valid Descuento objDescuento, @ApiIgnore Errors errors)  throws LogicaImplException{
 
-		return new ResponseEntity<>(arrastrameTripService.crearDescuento(objDescuento) .getDescuento(), HttpStatus.OK);
+		return new ResponseEntity<>(arrastrameTripService.crearDescuento(objDescuento) , HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "Actualizar Tipo de Descuento", response = RagnaxError.class)
@@ -437,7 +437,7 @@ public class ArrastrameTripController {
 			@ApiParam(value = "objeto de entrada", required = true, defaultValue = "0") @PathVariable String id, 
 			@ApiIgnore Errors errors)  throws LogicaImplException{
 
-		return new ResponseEntity<>(arrastrameTripService.actualizarDescuento(Integer.parseInt(id), objDescuento).getDescuento(),  HttpStatus.OK);
+		return new ResponseEntity<>(arrastrameTripService.actualizarDescuento(Integer.parseInt(id), objDescuento),  HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "Buscar Tipo de Descuento", response = RagnaxError.class)
@@ -451,7 +451,7 @@ public class ArrastrameTripController {
 			@ApiParam(value = "objeto de entrada", required = true, defaultValue = "0") @PathVariable String codigodescuento)  throws LogicaImplException{
 
 		return new ResponseEntity<>(arrastrameTripService.buscarDescuentoxCodigoDescuento(
-				new Descuento(codigodescuento)).getDescuento(), HttpStatus.OK);
+				new Descuento(codigodescuento)), HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "Listar Todos los Tipo de Descuento", response = RagnaxError.class)
@@ -464,7 +464,7 @@ public class ArrastrameTripController {
 	@GetMapping(value = "${servicio.app.url.listarTodoDescuento}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Descuento>>  listarTodoDescuento()  throws LogicaImplException{
 
-		return new ResponseEntity<>(arrastrameTripService.listarTodoDescuento().getListaDescuento(), HttpStatus.OK);
+		return new ResponseEntity<>(arrastrameTripService.listarTodoDescuento(), HttpStatus.OK);
 
 	}
 	
@@ -481,7 +481,7 @@ public class ArrastrameTripController {
 			@ApiParam(value = "objeto de entrada", required = true, defaultValue = "0") @PathVariable String fechaFinDescuentoB)  throws LogicaImplException{
 
 		return new ResponseEntity<>(arrastrameTripService.listarDescuentoxFechaFinDescuento(
-				fechaFinDescuentoA, fechaFinDescuentoB).getListaDescuento(), HttpStatus.OK);
+				fechaFinDescuentoA, fechaFinDescuentoB), HttpStatus.OK);
 
 	}
 	
@@ -498,7 +498,7 @@ public class ArrastrameTripController {
 		
 		
 		return new ResponseEntity<>(arrastrameTripService.crearPasajeroArrastrame(
-				objPasajeroArrastrame).getPasajeroArrastrame(), HttpStatus.OK);
+				objPasajeroArrastrame), HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "Actualizar Tipo de PasajeroArrastrame", response = PasajeroArrastrame.class)
@@ -514,7 +514,7 @@ public class ArrastrameTripController {
 			@ApiIgnore Errors errors)  throws LogicaImplException{
 
 		return new ResponseEntity<>(arrastrameTripService.actualizarPasajeroArrastrame(
-				Integer.parseInt(id), objPasajeroArrastrame).getPasajeroArrastrame(), HttpStatus.OK);
+				Integer.parseInt(id), objPasajeroArrastrame), HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "Buscar Tipo de Pasajero Arrastrame", response = PasajeroArrastrame.class)
@@ -528,7 +528,7 @@ public class ArrastrameTripController {
 			@ApiParam(value = "objeto de entrada", required = true, defaultValue = "0") @PathVariable String idusuario)  throws LogicaImplException{
 
 		return new ResponseEntity<>(arrastrameTripService.buscarPasajeroArrastramexIdUsuario(
-				new PasajeroArrastrame(Integer.parseInt(idusuario))).getPasajeroArrastrame(), HttpStatus.OK);
+				new PasajeroArrastrame(Integer.parseInt(idusuario))), HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "Listar Todos los Pasajero Arrastrame", response = PasajeroArrastrame.class)
@@ -543,7 +543,7 @@ public class ArrastrameTripController {
 			@ApiParam(value = "objeto de entrada", required = true, defaultValue = "0") @PathVariable String fechaFinPasajeroArrastrameA,
 			@ApiParam(value = "objeto de entrada", required = true, defaultValue = "0") @PathVariable String fechaFinPasajeroArrastrameB)  throws LogicaImplException{
 
-		return new ResponseEntity<>(arrastrameTripService.listarTodoPasajeroArrastrame().getListaPasajeroArrastrame(), HttpStatus.OK);
+		return new ResponseEntity<>(arrastrameTripService.listarTodoPasajeroArrastrame(), HttpStatus.OK);
 
 	}
 	
@@ -560,7 +560,7 @@ public class ArrastrameTripController {
 			@ApiParam(value = "objeto de entrada", required = true, defaultValue = "0") @PathVariable String idpasajeroarrastrame, 
 			@ApiIgnore Errors errors)  throws LogicaImplException{
 
-		return new ResponseEntity<>(arrastrameTripService.generarCodigoViaje(objViaje).getViaje(), HttpStatus.OK);
+		return new ResponseEntity<>(arrastrameTripService.generarCodigoViaje(objViaje), HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "Crear Viaje", response = Viaje.class)
@@ -577,7 +577,7 @@ public class ArrastrameTripController {
 //			@ApiParam(value = "objeto de entrada", required = true, defaultValue = "0") @PathVariable String stimeinicioviaje,
 			@ApiIgnore Errors errors)  throws LogicaImplException{
 
-		return new ResponseEntity<>(arrastrameTripService.crearViaje(idpasajeroarrastrame, objViaje).getViaje(), HttpStatus.OK);
+		return new ResponseEntity<>(arrastrameTripService.crearViaje(Integer.parseInt(idpasajeroarrastrame), objViaje), HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "Actualizar Viaje", response = Viaje.class)
@@ -593,7 +593,7 @@ public class ArrastrameTripController {
 			@ApiIgnore Errors errors)  throws LogicaImplException{
 
 		return new ResponseEntity<>(arrastrameTripService.actualizarViaje(
-				Integer.parseInt(id), objViaje).getViaje(), HttpStatus.OK);
+				Integer.parseInt(id), objViaje), HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "Buscar Viaje por codigo de viaje", response = Viaje.class)
@@ -606,7 +606,7 @@ public class ArrastrameTripController {
 	public ResponseEntity<Viaje>  buscarViajexCodigoViaje(  
 			@ApiParam(value = "objeto de entrada", required = true, defaultValue = "0") @PathVariable String codigoviaje)  throws LogicaImplException{
 
-		return new ResponseEntity<>(arrastrameTripService.buscarViajexCodigoViaje(new Viaje(codigoviaje)).getViaje(), HttpStatus.OK);
+		return new ResponseEntity<>(arrastrameTripService.buscarViajexCodigoViaje(new Viaje(codigoviaje)), HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "Buscar Viaje por codigo de viaje", response = Viaje.class)
@@ -616,11 +616,11 @@ public class ArrastrameTripController {
 			@ApiResponse(code = 200, message = "Servicio ejecutado satisfactoriamente", response = Viaje.class)
 	})
 	@GetMapping(value = "${servicio.app.url.buscarViajexTimeInicioMismoInstanteViaje}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Viaje>  buscarViajexTimeInicioMismoInstanteViaje( 
+	public ResponseEntity<List<Viaje>>  buscarViajexTimeInicioMismoInstanteViaje( 
 			@ApiParam(value = "objeto de entrada", required = true, defaultValue = "0") @PathVariable String stimeinicioviaje)  throws LogicaImplException{
 
-		return new ResponseEntity<>(arrastrameTripService.buscarViajexTimeInicioMismoInstanteViaje(
-				stimeinicioviaje).getViaje(),  HttpStatus.OK);
+		return new ResponseEntity<>(arrastrameTripService.listarViajexTimeInicioMismoInstanteViaje(
+				stimeinicioviaje),  HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "Listar Todos los Viaje", response = Viaje.class)
@@ -635,7 +635,7 @@ public class ArrastrameTripController {
 			@ApiParam(value = "objeto de entrada", required = true, defaultValue = "0") @PathVariable String fechaFinViajeA,
 			@ApiParam(value = "objeto de entrada", required = true, defaultValue = "0") @PathVariable String fechaFinViajeB)  throws LogicaImplException{
 
-		return new ResponseEntity<>(arrastrameTripService.listarTodoViaje().getListaViaje(), HttpStatus.OK);
+		return new ResponseEntity<>(arrastrameTripService.listarTodoViaje(), HttpStatus.OK);
 
 	}
 	
@@ -649,7 +649,7 @@ public class ArrastrameTripController {
 	public ResponseEntity<StatusViaje>  crearStatusViaje(  @ApiParam(value = "objeto de entrada", required = true) 
 	@RequestBody @Valid StatusViaje objStatusViaje, @ApiIgnore Errors errors)  throws LogicaImplException{
 
-		return new ResponseEntity<>(arrastrameTripService.crearStatusViaje(objStatusViaje).getStatusViaje(), HttpStatus.OK);
+		return new ResponseEntity<>(arrastrameTripService.crearStatusViaje(objStatusViaje), HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "Listar Staus de Viaje por el id del Viaje", response = RagnaxError.class)
@@ -663,7 +663,7 @@ public class ArrastrameTripController {
 			@ApiParam(value = "objeto de entrada", required = true, defaultValue = "0") @PathVariable String idViaje)  throws LogicaImplException{
 
 		return new ResponseEntity<>(arrastrameTripService.listarStatusViajexIdViaje(
-				new StatusViaje(new Viaje(idViaje))).getListaStatusViaje(), HttpStatus.OK);
+				new StatusViaje(new Viaje(idViaje))), HttpStatus.OK);
 
 	}
 	/***************************************************/
@@ -680,7 +680,7 @@ public class ArrastrameTripController {
 	@RequestBody @Valid DescuentoViaje objDescuentoViaje, @ApiIgnore Errors errors)  throws LogicaImplException{
 
 		return new ResponseEntity<>(arrastrameTripService.crearDescuentoViaje(
-				objDescuentoViaje).getDescuentoViaje(), HttpStatus.OK);
+				objDescuentoViaje), HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "Actualizar Tipo de DescuentoViaje", response = DescuentoViaje.class)
@@ -695,7 +695,7 @@ public class ArrastrameTripController {
 			@ApiParam(value = "objeto de entrada", required = true, defaultValue = "0") @PathVariable String codigoviaje)  throws LogicaImplException{
 
 		return new ResponseEntity<>(arrastrameTripService.buscarDescuentoViajexIdDescuentoxIdViaje(
-				new DescuentoViaje(new Descuento(codigodescuento), new Viaje(codigoviaje))).getDescuentoViaje(), HttpStatus.OK);
+				new DescuentoViaje(new Descuento(codigodescuento), new Viaje(codigoviaje))), HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "Actualizar Tipo de DescuentoViaje", response = DescuentoViaje.class)
@@ -712,7 +712,7 @@ public class ArrastrameTripController {
 			@ApiParam(value = "objeto de entrada", required = true, defaultValue = "0") @PathVariable String codigoViaje) throws LogicaImplException{
 
 		return new ResponseEntity<>(arrastrameTripService.eliminarDescuentoViaje(
-				Integer.parseInt(idusuario), new DescuentoViaje(new Descuento(codigodescuento), new Viaje(codigoViaje))).getDescuentoViaje()
+				Integer.parseInt(idusuario), new DescuentoViaje(new Descuento(codigodescuento), new Viaje(codigoViaje)))
 				, HttpStatus.OK);
 	}
 
@@ -728,7 +728,7 @@ public class ArrastrameTripController {
 			@ApiParam(value = "objeto de entrada", required = true, defaultValue = "0") @PathVariable String codigoviaje)  throws LogicaImplException {
 
 		return new ResponseEntity<>(arrastrameTripService.listarDescuentoViajexidViaje(
-				new DescuentoViaje(null, new Viaje(codigoviaje))).getListaDescuentoViaje(), HttpStatus.OK);
+				new DescuentoViaje(null, new Viaje(codigoviaje))), HttpStatus.OK);
 
 	}
 	
@@ -746,7 +746,7 @@ public class ArrastrameTripController {
 	@RequestBody @Valid ViajeRecomendado objViajeRecomendado, @ApiIgnore Errors errors)  throws LogicaImplException{
 
 		return new ResponseEntity<>(arrastrameTripService.crearViajeRecomendado(
-				objViajeRecomendado).getViajeRecomendado(), HttpStatus.OK);
+				objViajeRecomendado), HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "Actualizar Tipo de ViajeRecomendado", response = ViajeRecomendado.class)
@@ -760,7 +760,7 @@ public class ArrastrameTripController {
 			@ApiParam(value = "objeto de entrada", required = true, defaultValue = "0") @PathVariable String codigoviaje)  throws LogicaImplException{
 
 		return new ResponseEntity<>(arrastrameTripService.buscarViajeRecomendadoxIdViaje(
-				new ViajeRecomendado(new Viaje(codigoviaje), null)).getViajeRecomendado(), HttpStatus.OK);
+				new ViajeRecomendado(new Viaje(codigoviaje), null)), HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "Listar Todos los ViajeRecomendado", response = ViajeRecomendado.class)
@@ -776,7 +776,7 @@ public class ArrastrameTripController {
 
 		return new ResponseEntity<>(arrastrameTripService.
 				listarViajeRecomendadoxidTipoViajeRecomendado(
-				new ViajeRecomendado(null, new TipoViajeRecomendado(Integer.parseInt(idtipoviaje)))).getListaViajeRecomendado(), HttpStatus.OK);
+				new ViajeRecomendado(null, new TipoViajeRecomendado(Integer.parseInt(idtipoviaje)))), HttpStatus.OK);
 	}
 	
 	/***************************************************/
@@ -793,7 +793,7 @@ public class ArrastrameTripController {
 	@RequestBody @Valid PasajeroArrastrameViaje objPasajeroArrastrameViaje, @ApiIgnore Errors errors)  throws LogicaImplException{
 
 		return new ResponseEntity<>(arrastrameTripService.crearPasajeroArrastrameViaje(
-				objPasajeroArrastrameViaje).getPasajeroArrastrameViaje(), HttpStatus.OK);
+				objPasajeroArrastrameViaje), HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "Actualizar Tipo de Viaje Recomendado", response = RagnaxError.class)
@@ -809,7 +809,7 @@ public class ArrastrameTripController {
 			@ApiIgnore Errors errors)  throws LogicaImplException{
 
 		return new ResponseEntity<>(arrastrameTripService.actualizarPasajeroArrastrameViaje(
-				Integer.parseInt(id), objPasajeroArrastrameViaje).getPasajeroArrastrameViaje(), HttpStatus.OK);
+				Integer.parseInt(id), objPasajeroArrastrameViaje), HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "Buscar Tipo de Viaje Recomendado", response = RagnaxError.class)
@@ -824,7 +824,7 @@ public class ArrastrameTripController {
 			@ApiParam(value = "objeto de entrada", required = true, defaultValue = "0") @PathVariable String id)  throws LogicaImplException{
 
 		return new ResponseEntity<>(arrastrameTripService.eliminarPasajeroArrastrameViaje(Integer.parseInt(id), 
-				objPasajeroArrastrameViaje).getPasajeroArrastrameViaje(), HttpStatus.OK);
+				objPasajeroArrastrameViaje), HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "Listar Todos los Tipo de Viaje Recomendado", response = RagnaxError.class)
@@ -839,7 +839,7 @@ public class ArrastrameTripController {
 			@ApiParam(value = "objeto de entrada", required = true, defaultValue = "0") @PathVariable String codigoViaje)  throws LogicaImplException{
 
 		return new ResponseEntity<>(arrastrameTripService.listarPasajeroArrastrameViajexidViaje(
-				new PasajeroArrastrameViaje(new Viaje(codigoViaje))).getListaPasajeroArrastrameViaje(), HttpStatus.OK);
+				new PasajeroArrastrameViaje(new Viaje(codigoViaje))), HttpStatus.OK);
 
 	}
 
