@@ -16,12 +16,13 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-		<spring-cloud.version>Hoxton.RELEASE</spring-cloud.version>
 		<swagger.version>2.9.2</swagger.version>
+		<commons-configuration.version>1.10</commons-configuration.version>
+		<spring-cloud.version>Hoxton.RELEASE</spring-cloud.version>
+		<ragnax.domain>1.0.0-SNAPSHOT</ragnax.domain>
 	</properties>
 
 	<dependencies>
-		
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-config</artifactId>
@@ -64,6 +65,11 @@
 			<artifactId>spring-web</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
 			<version>${swagger.version}</version>
@@ -74,9 +80,9 @@
 			<version>${swagger.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<scope>runtime</scope>
+			<groupId>com.ragnax</groupId>
+			<artifactId>ragnax-domain</artifactId>
+			<version>${ragnax.domain}</version>
 		</dependency>
 		
 	</dependencies>
